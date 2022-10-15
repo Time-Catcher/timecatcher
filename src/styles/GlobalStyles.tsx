@@ -4,6 +4,7 @@ import reset from "styled-reset";
 const GlobalStyle = createGlobalStyle`
   ${reset}
     body{
+        margin-top: 87px;
         transition: all 0.5s ease-in-out;
         font-family: 'Roboto', sans-serif;
     };
