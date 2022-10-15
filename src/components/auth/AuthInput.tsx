@@ -1,30 +1,91 @@
 import styled from "styled-components";
+import { useForm, SubmitHandler } from "react-hook-form";
+import React from "react";
+
+interface IFormInput {
+  email: string;
+  nickname: string;
+  password: string;
+  passwordCheck: string;
+}
+
+// type InputProps = {
+//   label: Path<IFormInput>;
+//   register: UseFormRegister<IFormInput>;
+//   required: boolean;
+// };
 
 export default function AuthInput() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormDiv>
         <Label htmlFor="email">이메일</Label>
-        <Input type="email" id="email" />
+        <Input
+          type="text"
+          {...register("email", {
+            required: "필수 입력값입니다.",
+            validate: (email) =>
+              (email.includes("@") && email.includes(".")) ||
+              "이메일 형식을 지켜주세요.",
+          })}
+        />
       </FormDiv>
+      {errors.email && <Error>{errors.email?.message}</Error>}
       <FormDiv>
         <Label htmlFor="nickname">별명</Label>
-        <Input type="text" id="nickname" />
+        <Input
+          {...register("nickname", {
+            required: "필수 입력값입니다.",
+            validate: (nickname) =>
+              nickname.trim().length >= 3 || "닉네임 형식을 지켜주세요.",
+          })}
+        />
       </FormDiv>
+      {errors.nickname && <Error>{errors.nickname?.message}</Error>}
       <FormDiv>
         <Label htmlFor="password">비밀번호</Label>
-        <Input type="password" id="password" />
+        <Input
+          type="password"
+          {...register("password", {
+            required: "필수 입력값입니다.",
+            validate: (password) =>
+              password.length >= 8 || "패스워드 형식을 지켜주세요.",
+          })}
+        />
       </FormDiv>
+      {errors.password && <Error>{errors.password?.message}</Error>}
       <FormDiv>
         <Label htmlFor="passwordCheck">비밀번호 확인</Label>
-        <Input type="password" id="passwordCheck" />
+        <Input
+          type="password"
+          {...register("passwordCheck", {
+            required: true,
+            validate: (passwordCheck) =>
+              passwordCheck === watch("password") ||
+              "비밀번호가 일치하지 않습니다.",
+          })}
+        />
       </FormDiv>
+      {errors.passwordCheck && <Error>{errors.passwordCheck?.message}</Error>}
       <Submit>
         <P>회원가입</P>
       </Submit>
     </Form>
   );
 }
+
+const Error = styled.p`
+  color: red;
+  margin: 0;
+`;
 
 const P = styled.p`
   width: 45px;
