@@ -1,7 +1,5 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import MainPage from "./pages/main/MainPage";
 import SignInPage from "./pages/SignInPage";
@@ -9,9 +7,7 @@ import SignUpPage from "./pages/SignUpPage";
 import GlobalStyle from "./styles/GlobalStyles";
 import Preference from "./pages/preference/preference";
 
-
 const Router = () => {
-
   return (
     <BrowserRouter>
       <RecoilRoot>

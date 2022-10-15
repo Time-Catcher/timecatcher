@@ -1,11 +1,23 @@
 import styled from "styled-components";
+
+const Global = styled.div`
+  /* display: flex;
+  justify-content: center;
+  background: #fffbff;
+  height: 100vh; */
+`;
+
 const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 100px;
-  background: #fffbff;
+  width: 400px;
+  padding: 50px 0;
+  margin-top: 50px;
+  border: 1px solid #7a757f;
+  border-radius: 8px;
+  background-color: #fff;
 `;
 
 const AuthForm = styled.form`
@@ -81,6 +93,7 @@ const ToggleAuth = styled.div`
 `;
 
 export {
+  Global,
   AuthContainer,
   AuthForm,
   AuthInputBox,
