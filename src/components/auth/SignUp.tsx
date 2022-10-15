@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React from "react";
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 interface IFormInput {
   email: string;
@@ -9,20 +11,27 @@ interface IFormInput {
   passwordCheck: string;
 }
 
-// type InputProps = {
-//   label: Path<IFormInput>;
-//   register: UseFormRegister<IFormInput>;
-//   required: boolean;
-// };
-
-export default function AuthInput() {
+export default function SignUp() {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        updateProfile(user, {
+          displayName: data.nickname,
+        });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
