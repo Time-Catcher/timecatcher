@@ -1,4 +1,5 @@
-import AuthInput from "./components/auth/AuthInput";
+import SignIn from "./components/auth/SignIn";
+import SignUp from "./components/auth/SignUp";
 import Button from "./components/Button";
 
 function App() {
@@ -7,7 +8,9 @@ function App() {
       안녕하세요 화이팅 해봐요. 설정 잘 됐을라나.. <br />
       절대경로 설정해야하는뎁..
       <Button />
-      <AuthInput />
+      <SignUp />
+      <br />
+      <SignIn />
     </div>
   );
 }
