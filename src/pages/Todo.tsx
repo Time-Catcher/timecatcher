@@ -29,9 +29,10 @@ const TodoItem = styled.div<IsChecked>`
   padding: 8px;
   margin-bottom: 15px;
   width: 389px;
-  height: 64px;
-  color: ${(props) => (props.isChecked ? "#282828" : "#7150B4")};
-  background-color: ${(props) => (props.isChecked ? "#4b4b4cbe" : "#fffbff")};
+  min-height: 64px;
+  color: ${(props) => (props.isChecked ? "grey" : "#280866")};
+  background-color: ${(props) =>
+    props.isChecked ? "rgba(153, 121, 173,0.5)" : "rgba(122, 54, 212, 0.5)"};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   flex: none;
@@ -73,18 +74,19 @@ const EditBtn = styled.button`
 const EditGroup = styled.div`
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  width: 150px;
-  height: 20px;
-  bottom: 1px;
-  padding-bottom: 5px;
-  right: 30px;
+  height: 54px;
+  bottom: 50%;
+  transform: translate(0, 50%);
+  right: 40px;
   button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 8px;
+    padding: 12px 8px;
+
     gap: 10px;
 
     position: relative;
@@ -93,8 +95,34 @@ const EditGroup = styled.div`
     background: #fffbff;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    border-color: white;
+    border: none;
+    outline: none;
   }
+`;
+
+const TodoSpan = styled.span`
+  display: inline-block;
+  width: 75%;
+  padding: 20px;
+  overflow: visible;
+`;
+
+const EditTodo = styled.div`
+  margin-left: 20px;
+  & input {
+    display: inline-block;
+    height: 30px;
+    width: 120%;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+  }
+`;
+
+const CheckInput = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
 `;
 
 interface IsChecked {
@@ -161,39 +189,52 @@ export default function Todo({ text, id }: ITodo) {
   };
 
   return (
-    <TodoItem isChecked={isChecked}>
-      {editMode ? (
-        <>
-          <input type="text" ref={editInputRef} />
-          <button onClick={handleEdit}>수정</button>
-          <button onClick={onCancel}>취소</button>
-        </>
-      ) : (
-        <>
-          <input
-            type="checkbox"
-            placeholder={text}
-            onClick={onChecked}
-            key={id}
-          />
-          {text}
-          <PomoCounter />
-        </>
-      )}
+    <>
+      <TodoItem isChecked={isChecked}>
+        {editMode ? (
+          <EditTodo>
+            <input type="text" defaultValue={text} ref={editInputRef} />
+            <EditGroup>
+              <button
+                onClick={handleEdit}
+                style={{ color: "white", backgroundColor: "#6C119C" }}
+              >
+                완료
+              </button>
+              <button onClick={onCancel} style={{ backgroundColor: "#fcddd9" }}>
+                취소
+              </button>
+            </EditGroup>
+          </EditTodo>
+        ) : (
+          <>
+            <CheckInput
+              type="checkbox"
+              placeholder={text}
+              onClick={onChecked}
+              key={id}
+            />
+            <TodoSpan>{text}</TodoSpan>
+            <PomoCounter />
+          </>
+        )}
 
-      {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
-      {!isChecked && editOpen ? (
-        <EditGroup>
-          <button
-            onClick={onDelete}
-            style={{ backgroundColor: "#BA1A1A", color: "#fffbff" }}
-          >
-            삭제
-          </button>
-          <button onClick={onEditMode}>수정</button>
-        </EditGroup>
-      ) : null}
-    </TodoItem>
+        {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
+        {!isChecked && editOpen ? (
+          <EditGroup>
+            <button
+              onClick={onDelete}
+              style={{ backgroundColor: "#6C119C", color: "#fffbff" }}
+            >
+              삭제
+            </button>
+            <button onClick={onEditMode} style={{ backgroundColor: "#fcddd9" }}>
+              수정
+            </button>
+          </EditGroup>
+        ) : null}
+      </TodoItem>
+    </>
   );
 }
 
