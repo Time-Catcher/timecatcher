@@ -21,24 +21,26 @@ import {
   BBoMoDescTitleWrapper,
   BBoMoModalQuitButton,
   Main,
-  MainDropDown,
-  MainDropUp,
+  MainDropLeft,
+  MainDropRight,
   MainPageWrapper,
+  TimerTodoWrapper,
 } from "./MainStyle";
 import addNotification from 'react-push-notification';
+import Preference from '../preference/preference';
+import { LeftDrawer } from './MainStyle';
 // import NotificationSound from "../../asset/notification-sound.mp3"
 const MainPage = () => {
-  const [topDrawerOpen,setTopDrawerOpen] =useState(false);
-  const [bottomDrawerOpen,setBottomDrawerOpen] = useState(false);
+  const [leftDrawerOpen,setLeftDrawerOpen] =useState(false);
+  const [rightDrawerOpen,setRightDrawerOpen] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
-  const ssionAndBreak = useRecoilValue(sessionAndBreakState);
-  const [sessionAndBreakTime, setSessionAndBreakTime] = useState(ssionAndBreak);
+  const sessionAndBreak = useRecoilValue(sessionAndBreakState);
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({
-      expiryTimestamp: minutesToDate(sessionAndBreakTime[timerMode]),
+      expiryTimestamp: minutesToDate(sessionAndBreak[timerMode]),
       autoStart: false,
       onExpire: () => {
         if (timerMode === "breakTime") {
@@ -52,10 +54,9 @@ const MainPage = () => {
         }
       },
     });
-
   useEffect(()=>{
-    restart(minutesToDate(sessionAndBreakTime[timerMode]),false);
-  },[timerMode])
+    restart(minutesToDate(sessionAndBreak[timerMode]),false);
+  },[timerMode,sessionAndBreak])
   useEffect(() => {
     setTimerData({ seconds, minutes, isRunning });
     setTimerFunction({ start, pause, restart, resume });
@@ -83,40 +84,43 @@ const MainPage = () => {
     });
     audioPlayer.current?.play();
   };
-  const toggleTopDrawer =() => {
-    setTopDrawerOpen((prevState) => !prevState)
+  const toggleLeftDrawer =() => {
+    setLeftDrawerOpen((prevState) => !prevState)
 }
-  const toggleBottomDrawer = () =>{
-    setBottomDrawerOpen((prevState)=>!prevState)
+  const toggleRightDrawer = () =>{
+    setRightDrawerOpen((prevState)=>!prevState)
   }
   return (
     <Main>
-      {/* <button onClick={toggleTopDrawer}>테스트</button> */}
-      <Drawer   className='top-drawer'
-                open={topDrawerOpen}
-                onClose={toggleTopDrawer}
-                direction='top'
+      {/* <button onClick={toggleLeftDrawer}>테스트</button> */}
+      <LeftDrawer   className='left-drawer'
+                open={leftDrawerOpen}
+                onClose={toggleLeftDrawer}
+                direction='left'
+                
+            >
+                <Preference onClose={toggleLeftDrawer}/>
+        </LeftDrawer>
+        <Drawer   className='right-drawer'
+                open={rightDrawerOpen}
+                onClose={toggleRightDrawer}
+                direction='right'
                 size={250}
             >
-                <div>Hello World</div>
-        </Drawer>
-        <Drawer   className='bottom-drawer'
-                open={bottomDrawerOpen}
-                onClose={toggleBottomDrawer}
-                direction='bottom'
-                size={250}
-            >
-                <div>Hello World</div>
+                <div>Todo 들어갈 자리</div>
         </Drawer>
       <audio ref={audioPlayer} src="notification-sound.mp3"/>
       
       <MainPageWrapper>
 
         <InfoModal />
-        <MainDropUp src="images/dropUpButton.png" onClick={toggleTopDrawer}/>
-        <MainTimer openModal={handleActiveQuestion} />
-        <MainTodoList />
-        <MainDropDown src="images/dropDownButton.png" onClick={toggleBottomDrawer}/>
+        <MainDropRight src="images/dropUpButton.png" onClick={toggleLeftDrawer}/>
+        <TimerTodoWrapper>
+          <MainTimer openModal={handleActiveQuestion} />
+          <MainTodoList />
+        </TimerTodoWrapper>
+
+        <MainDropLeft src="images/dropDownButton.png" onClick={toggleRightDrawer}/>
       </MainPageWrapper>
     </Main>
   );
