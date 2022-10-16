@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Drawer from 'react-modern-drawer';
 
 export const Main = styled.div`
     display: flex;
@@ -104,16 +105,18 @@ export const MainDropDown = styled.img`
 
 export const BBoMoDescModal = styled.div`
     position: fixed;
+    top:32px;
     z-index: 10000;
     width: 320px;
     height: 672px;
-    background-color: #ffffff;
+    background-color: #FFFBFF;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
+    justify-content : space-evenly;
     align-items: center;
-    padding: 16px 32px;
+    padding: 16px 0;
 `
 
 export const BBoMoDescTitleWrapper = styled.div`
@@ -141,17 +144,17 @@ export const BBoMoDescHr = styled.hr`
 `
 
 export const BBoMoDesc = styled.div`
-    padding: 10px;
-    width: 256px;
-    height: 444px;
-    text-align: center;
+    padding: 8px;
+    // width: 256px;
+    // height: 444px;
+    text-align: center;    
+
 `
 
 export const BBoMoDescCat = styled.img`
     width: 170px;
     height: 170px;
 `
-
 
 
 
