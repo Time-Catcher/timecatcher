@@ -129,8 +129,10 @@ export const MainDropLeft = styled.img`
 
 export const BBoMoDescModal = styled.div`
     position: fixed;
-    top:32px;
-    left: 400px;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    right:auto;
     z-index: 10000;
     width: 600px;
     height: 672px;

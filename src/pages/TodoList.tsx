@@ -9,8 +9,7 @@ const GlobalContainer = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
-  padding-top: 100px;
-  display: flex;
+  // display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
