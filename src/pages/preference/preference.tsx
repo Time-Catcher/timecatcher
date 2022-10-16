@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
+import { useState } from "react";
 import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
 import {
@@ -22,6 +22,8 @@ import {
   Title,
   ModeWrapper,
 } from "./style";
+import Modal from "../../components/Modal";
+import Retrospect from "../retrospect/retrospect";
 
 const Preference = () => {
   const [, setRestTimeSet] = useRecoilState(restTimeState);
@@ -44,6 +46,8 @@ const Preference = () => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
 
+  const [helpModalState, setHelpModalState] = useState(false);
+
   return (
     <Background>
       <PrefContainer>
@@ -64,7 +68,16 @@ const Preference = () => {
 
           <ModeWrapper>
             <OptionTitle>엄격 기록모드 On/Off</OptionTitle>
-            <HelpLabel src="/mode_help_label.png"></HelpLabel>
+            <HelpLabel
+              src="/mode_help_label.png"
+              onClick={() => {
+                setHelpModalState(!helpModalState);
+              }}
+            ></HelpLabel>
+
+            <Modal modalState={helpModalState}>
+              <Retrospect></Retrospect>
+            </Modal>
           </ModeWrapper>
 
           <SideToggleBar onToggle={handleToggleStrictMode}></SideToggleBar>
