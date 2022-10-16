@@ -1,11 +1,13 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import MainPage from "./pages/main/MainPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import GlobalStyle from "./styles/GlobalStyles";
 import Preference from "./pages/preference/preference";
+import TodoList from "./pages/TodoList";
+
 
 const Router = () => {
   return (
@@ -18,6 +20,7 @@ const Router = () => {
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/preference" element={<Preference />} />
+            <Route path="/todo" element={<TodoList />} />
           </Routes>
       </RecoilRoot>
     </BrowserRouter>

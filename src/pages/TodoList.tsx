@@ -1,22 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { text } from "stream/consumers";
-import { todoState } from "./atoms";
+import { completedTodoCount, todoState } from "./atoms";
+import styled from "styled-components";
 import CreateTodo from "./CreateTodo";
 import Todo from "./Todo";
 
+const GlobalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TodoBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+  width: 420px;
+  background: #fffbff;
+  border-radius: 15px 15px 0px 0px;
+`;
+
+const RecordBtn = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+
+  width: 405px;
+  height: 64px;
+  background: #6750a4;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: white;
+
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+
+  &:disabled {
+    background-color: #ccc;
+    color: #999999;
+  }
+`;
+
+type ICount = number;
+
 export default function TodoList() {
   const [todos, setTodos] = useRecoilState(todoState);
+  const [checkCount, setCheckCount] = useState<ICount>(0);
+  const completedCount = useRecoilValue(completedTodoCount);
 
+  const setCount = () => {
+    setCheckCount((prevCount) => prevCount + 1);
+  };
   return (
-    <div>
-      <CreateTodo />
-      {todos.length
-        ? todos.map((toDo) => (
-            <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
-          ))
-        : null}
-    </div>
+    <>
+      <GlobalContainer>
+        <TodoBody>
+          <CreateTodo />
+          {todos.length
+            ? todos.map((toDo) => (
+                <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
+              ))
+            : null}
+          <RecordBtn
+            disabled={!(completedCount === todos.length && todos.length > 0)}
+          >
+            회고 버튼
+          </RecordBtn>
+        </TodoBody>
+      </GlobalContainer>
+    </>
   );
 }
 
