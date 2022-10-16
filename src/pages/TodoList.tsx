@@ -4,6 +4,9 @@ import { completedTodoCount, todoState } from "./atoms";
 import styled from "styled-components";
 import CreateTodo from "./CreateTodo";
 import Todo from "./Todo";
+import Modal from "../components/Modal";
+import Retrospect from "./retrospect/retrospect";
+import { strictModeState } from "./preference/atoms";
 
 const GlobalContainer = styled.div`
   width: 100%;
@@ -59,6 +62,13 @@ export default function TodoList() {
   const setCount = () => {
     setCheckCount((prevCount) => prevCount + 1);
   };
+
+  const [retrospectModalState, setRetrospectModalState] = useState(false);
+
+  const handleChangeRetroModalState = () => {
+    setRetrospectModalState(!retrospectModalState);
+  };
+
   return (
     <>
       {/* <GlobalContainer>
@@ -72,9 +82,14 @@ export default function TodoList() {
           : null}
         <RecordBtn
           disabled={!(completedCount === todos.length && todos.length > 0)}
+          onClick={handleChangeRetroModalState}
         >
           회고 버튼
         </RecordBtn>
+
+        <Modal modalState={retrospectModalState}>
+          <Retrospect handleExit={handleChangeRetroModalState}></Retrospect>
+        </Modal>
       </TodoBody>
     </>
   );
