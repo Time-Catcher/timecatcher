@@ -1,9 +1,14 @@
+
 import { TimerResult } from "react-timer-hook";
 import { atom } from "recoil";
 import { ITodo } from "../pages/atoms";
 
 export interface activeTodo{
   id:Pick<ITodo, "id">
+
+export interface 뽀모도로_휴식 {
+  뽀모도로: number;
+  휴식: number;
 }
 export interface SessionAndBreak {
   session: number;
@@ -44,6 +49,25 @@ export const timerModeState = atom<timerMode>({
 // export const breakTimerState = atom<BreakTimerState>({
 //     key:"breakTimer",
 //     default:{
-
 //     }
 // })
+
+export const 뽀모도로_휴식state = atom<뽀모도로_휴식>({
+  key: "뽀모도로_휴식",
+  default: {
+    뽀모도로: new Date().setSeconds(new Date().getSeconds() + 1500),
+    휴식: new Date().setSeconds(new Date().getSeconds() + 600),
+  },
+});
+
+type Auth = {
+  uid: string;
+  email: string;
+  displayName: string;
+  isLogined: boolean;
+};
+
+export const authState = atom<Auth>({
+  key: "auth-state",
+  default: { uid: "", displayName: "", isLogined: false } as Auth,
+});

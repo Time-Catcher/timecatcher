@@ -1,22 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import SignIn from "../components/auth/SignIn";
-import { getAuth } from "firebase/auth";
-import { useNavigate } from "react-router";
-import { onAuthStateChanged } from "firebase/auth";
+import { Navigate } from "react-router";
 import styled from "styled-components";
-// import WizardCat from '../../public/images/wizardCat.png'
+import { firebaseConfig } from "../firebaseConfig";
 
 export default function SignInPage() {
-  const navigate = useNavigate();
-
-  const auth = getAuth();
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       navigate("/main");
-  //     }
-  //   });
-  // }, []);
+  const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  if (sessionStorage.getItem(_session_key)) {
+    return <Navigate to="/main" />;
+  }
 
   return (
     <AuthContainer>
@@ -43,8 +35,10 @@ const AuthContainer = styled.div`
 `;
 
 const AuthLogo = styled.div`
+  text-align: center;
+
   & img {
-    width: 150px;
+    width: 100px;
   }
 
   & h1 {
