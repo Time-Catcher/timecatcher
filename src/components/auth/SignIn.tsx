@@ -1,9 +1,20 @@
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
 import { useForm, SubmitHandler } from "react-hook-form";
 import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
-
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+import {
+  Global,
+  AuthContainer,
+  AuthForm,
+  AuthInputBox,
+  ValidateError,
+  SubmitBtn,
+  ToggleAuth,
+} from "./styles";
+import { authState } from "../../atoms/atoms";
 interface IFormInput {
   email: string;
   password: string;
@@ -16,12 +27,21 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const setAuthState = useSetRecoilState(authState);
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        const { uid, email, displayName } = userCredential.user;
 
-        console.log(user);
+        setAuthState({
+          uid,
+          email: email ?? "",
+          displayName: displayName ?? "",
+          isLogined: true,
+        });
+        navigate("/main");
       })
       .catch((error) => {
         alert(error.message);
@@ -29,224 +49,47 @@ export default function SignIn() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormDiv>
-        <Label htmlFor="email">이메일</Label>
-        <Input
-          type="text"
-          {...register("email", {
-            required: "필수 입력값입니다.",
-            validate: (email) =>
-              (email.includes("@") && email.includes(".")) ||
-              "이메일 형식을 지켜주세요.",
-          })}
-        />
-      </FormDiv>
-      {errors.email && <Error>{errors.email?.message}</Error>}
-      <FormDiv>
-        <Label htmlFor="password">비밀번호</Label>
-        <Input
-          type="password"
-          {...register("password", {
-            required: "필수 입력값입니다.",
-            validate: (password) =>
-              password.length >= 8 || "패스워드 형식을 지켜주세요.",
-          })}
-        />
-      </FormDiv>
-      {errors.password && <Error>{errors.password?.message}</Error>}
-      <Submit>
-        <P>로그인</P>
-      </Submit>
-    </Form>
+    <Global>
+      <AuthContainer>
+        <h2>LOGIN</h2>
+        <AuthForm onSubmit={handleSubmit(onSubmit)}>
+          <AuthInputBox>
+            <label htmlFor="email">이메일</label>
+            <input
+              type="text"
+              {...register("email", {
+                required: "필수 입력값입니다.",
+                validate: (email) =>
+                  (email.includes("@") && email.includes(".")) ||
+                  "이메일 형식을 지켜주세요.",
+              })}
+            />
+            {errors.email && (
+              <ValidateError>{errors.email?.message}</ValidateError>
+            )}
+          </AuthInputBox>
+          <AuthInputBox>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              {...register("password", {
+                required: "필수 입력값입니다.",
+                validate: (password) =>
+                  password.length >= 8 || "패스워드 형식을 지켜주세요.",
+              })}
+            />
+            {errors.password && (
+              <ValidateError>{errors.password?.message}</ValidateError>
+            )}
+          </AuthInputBox>
+          <SubmitBtn>
+            <span>로그인</span>
+          </SubmitBtn>
+        </AuthForm>
+        <ToggleAuth>
+          <span>계정이 없으신가요?</span> <Link to="/signup">회원가입</Link>
+        </ToggleAuth>
+      </AuthContainer>
+    </Global>
   );
 }
-
-const Error = styled.p`
-  color: red;
-  margin: 0;
-`;
-
-const P = styled.p`
-  width: 45px;
-  height: 18px;
-
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 150%;
-  /* identical to box height, or 18px */
-
-  /* material-theme/sys/light/on-primary */
-
-  color: #ffffff;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-`;
-
-const Submit = styled.button`
-  /* 버튼 */
-
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
-  gap: 8px;
-
-  width: 304px;
-  height: 48px;
-
-  /* material-theme/sys/light/primary
-
-token=md.sys.color.primary
-
-primary / on-primary
-
-Regular text:
-Level AA - ✅ Pass
-Level AAA - ❌ Fail
-
-Large text:
-Level AA - ✅ Pass
-Level AAA - ✅ Pass
-
-Icons:
-Level AA - ✅ Pass
-*/
-  background: #6750a4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 4;
-  align-self: stretch;
-  flex-grow: 0;
-`;
-
-const FormDiv = styled.div`
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 8px;
-
-  width: 304px;
-  height: 60px;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
-`;
-
-const Label = styled.label`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: start;
-  align-items: center;
-  padding: 0px;
-  gap: 16px;
-  font-size: 14px;
-  height: 20px;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 16px 8px;
-  gap: 32px;
-
-  position: relative;
-  width: 320px;
-  height: 448px;
-
-  /* material-theme/sys/light/background
-
-token=md.sys.color.background
-
-background / on-background
-
-Regular text:
-Level AA - ✅ Pass
-Level AAA - ✅ Pass
-
-Large text:
-Level AA - ✅ Pass
-Level AAA - ✅ Pass
-
-Icons:
-Level AA - ✅ Pass
-*/
-  background: #fffbff;
-  border-radius: 16px;
-`;
-const Input = styled.input`
-  /* Frame 6 */
-
-  box-sizing: border-box;
-
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-
-  width: 304px;
-  height: 32px;
-
-  /* material-theme/sys/light/surface
-
-token=md.sys.color.surface
-
-surface / on-surface
-
-Regular text:
-Level AA - ✅ Pass
-Level AAA - ✅ Pass
-
-Large text:
-Level AA - ✅ Pass
-Level AAA - ✅ Pass
-
-Icons:
-Level AA - ✅ Pass
-*/
-  background: #fffbff;
-  /* material-theme/sys/light/outline
-
-token=md.sys.color.outline
-*/
-  border: 1px solid #7a757f;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
-`;

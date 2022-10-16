@@ -10,17 +10,20 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.26",
+    "firebase": "^9.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
     "react-router": "^6.4.2",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-<<<<<<< HEAD
+
     "react-timer-hook": "^3.0.5",
     "recoil": "^0.7.6",
-=======
->>>>>>> 11ebc1b0118c5a93f599ceb7f7664ea74e8892a6
+    "styled-components": "^5.3.6",
+    "styled-reset": "^4.4.2",
+
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },

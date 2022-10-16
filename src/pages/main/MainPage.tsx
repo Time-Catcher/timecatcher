@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import MainTimer from '../../components/main/MainTimer';
 import MainTodoList from '../../components/main/MainTodoList';
 import { BBoMoDesc, BBoMoDescCat, BBoMoDescHr, BBoMoDescModal, BBoMoDescTitle, BBoMoDescTitleWrapper, BBoMoModalQuitButton, Main, MainDropDown, MainDropUp, MainPageWrapper } from './MainStyle';
+import Mocktest from "./Mocktest";
+
 
 
 const MainPage = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + 1500);
   const [isActiveQuestion, setIsActiveQuestion] = useState(false);
+
     
     const handleActiveQuestion = () => {
         setIsActiveQuestion(true);
@@ -58,6 +61,7 @@ const MainPage = () => {
         </>}
         
       </MainPageWrapper>
+      {/* <Mocktest /> */}
     </Main>
   )
 }
