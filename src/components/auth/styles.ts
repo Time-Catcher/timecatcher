@@ -64,7 +64,7 @@ const AuthInputBox = styled.div`
 const ValidateError = styled.p`
   position: absolute;
   font-size: 12px;
-  bottom: -40px;
+  bottom: -22px;
   color: red;
 `;
 
@@ -99,5 +99,5 @@ export {
   AuthInputBox,
   ValidateError,
   SubmitBtn,
-  ToggleAuth,
+  ToggleAuth
 };

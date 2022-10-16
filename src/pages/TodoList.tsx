@@ -43,12 +43,6 @@ const RecordBtn = styled.button`
   border: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   color: white;
-
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
-
   &:disabled {
     background-color: #ccc;
     color: #999999;
