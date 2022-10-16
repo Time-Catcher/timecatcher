@@ -4,7 +4,7 @@ import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
 import {
   darkModeState,
-  restTimeState,
+  // restTimeState,
   strictModeState,
   whiteNoiseState,
 } from "./atoms";
@@ -22,15 +22,18 @@ import {
   Title,
   ModeWrapper,
 } from "./style";
+import { sessionAndBreakState } from "../../atoms/atoms";
 
 interface PreferenceProps{
   onClose:()=>void
 }
 
 const Preference = ({onClose}:PreferenceProps) => {
-  const [, setRestTimeSet] = useRecoilState(restTimeState);
+  const [sessionAndBreak, setSessionAndBreakTime] = useRecoilState(sessionAndBreakState);
   const handleChangeRestTimeSet = (value: string) => {
-    setRestTimeSet({ restTimeSet: value });
+     const [ session,breakTime ]= value.split("-").map(Number)
+     setSessionAndBreakTime({ session,breakTime });
+
   };
 
   const [, setWhiteNoiseSet] = useRecoilState(whiteNoiseState);
@@ -47,7 +50,7 @@ const Preference = ({onClose}:PreferenceProps) => {
   const handleToggleDarkMode = () => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
-
+  
   return (
     <Background>
       <PrefContainer>

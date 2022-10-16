@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 
-export const restTimeState = atom({
-  key: "restTimeState",
-  default: {
-    restTimeSet: "25-2",
-  },
-});
+// export const restTimeState = atom({
+//   key: "restTimeState",
+//   default: {
+//     restTimeSet: "25-5",
+//   },
+// });
 
 export const whiteNoiseState = atom({
   key: "whiteNoiseState",

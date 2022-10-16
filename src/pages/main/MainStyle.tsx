@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Drawer from 'react-modern-drawer';
+import backgroundImg from '../img/pot.png';
 
 export const Main = styled.div`
     display: flex;
@@ -54,13 +55,10 @@ export const MainLogo = styled.div`
 
 export const MainLogoTitle = styled.span`
     font-weight: 400;
-    font-size: 45px;
+    font-size: 46px;
     line-height: 52px;
     color: #ffffff;
-    @font-face {
-        font-family: Amarillo;
-        src: url('styles/fonts/Amarillo.woff') format('woff');
-    }
+    font-family: 'Splash', cursive;
 `
 
 export const MainQuestion = styled.button`
@@ -69,6 +67,7 @@ export const MainQuestion = styled.button`
     border: none;
     border-radius: 50%;
     cursor: pointer;
+    opacity: 0.7;
 
     &:hover {
         background-color: #EFEFEF;
@@ -88,8 +87,7 @@ export const MainBBomodoro = styled.div`
     margin: 10px;
     font-size: 32px;
     color: #ffffff;
-    background-color: #00744D;
-    border: 5px solid #A97C51;
+    background-image: url(${backgroundImg});
     `
 
 export const MainTimerButton = styled.div`
@@ -132,8 +130,9 @@ export const MainDropLeft = styled.img`
 export const BBoMoDescModal = styled.div`
     position: fixed;
     top:32px;
+    left: 400px;
     z-index: 10000;
-    width: 320px;
+    width: 600px;
     height: 672px;
     background-color: #FFFBFF;
     border-radius: 10px;
@@ -146,8 +145,8 @@ export const BBoMoDescModal = styled.div`
 `
 
 export const BBoMoDescTitleWrapper = styled.div`
-    width: 256px;
-    height: 24px;
+    width: 530px;
+    height: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -155,22 +154,22 @@ export const BBoMoDescTitleWrapper = styled.div`
 
 export const BBoMoDescTitle = styled.span`
     font-weight: 500;
-    font-size: 14px;
+    font-size: 30px;
 `
 
 export const BBoMoModalQuitButton = styled.img`
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
 `
 
 export const BBoMoDescHr = styled.hr`
-    width: 256px;
+    width: 550px;
     border: 1px solid #7A757F;
 `
 
 export const BBoMoDesc = styled.div`
-    padding: 8px;
+    padding: 10px;
     // width: 256px;
     // height: 444px;
     text-align: center;    

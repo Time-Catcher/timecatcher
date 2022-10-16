@@ -34,14 +34,13 @@ const MainPage = () => {
   const [leftDrawerOpen,setLeftDrawerOpen] =useState(false);
   const [rightDrawerOpen,setRightDrawerOpen] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
-  const ssionAndBreak = useRecoilValue(sessionAndBreakState);
-  const [sessionAndBreakTime, setSessionAndBreakTime] = useState(ssionAndBreak);
+  const sessionAndBreak = useRecoilValue(sessionAndBreakState);
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({
-      expiryTimestamp: minutesToDate(sessionAndBreakTime[timerMode]),
+      expiryTimestamp: minutesToDate(sessionAndBreak[timerMode]),
       autoStart: false,
       onExpire: () => {
         if (timerMode === "breakTime") {
@@ -55,10 +54,9 @@ const MainPage = () => {
         }
       },
     });
-
   useEffect(()=>{
-    restart(minutesToDate(sessionAndBreakTime[timerMode]),false);
-  },[timerMode])
+    restart(minutesToDate(sessionAndBreak[timerMode]),false);
+  },[timerMode,sessionAndBreak])
   useEffect(() => {
     setTimerData({ seconds, minutes, isRunning });
     setTimerFunction({ start, pause, restart, resume });
