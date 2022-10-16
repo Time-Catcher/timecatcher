@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { completedTodoCount, ITodo, todoState } from "./atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { activeTodoSpendTimeState, completedTodoCount, ITodo,  todoState } from "./atoms";
 import PomoCount from "./img/Pomocounter.png";
 import Dots from "./img/Dot.png";
 import Chk from "./img/checkbox.png";
+import { activeTodoSelector, activeTodoState, timerDataState } from "../atoms/atoms";
 
 const TodoContainer = styled.div`
   display: flex;
@@ -103,7 +104,7 @@ interface IsChecked {
 
 type Count = (test: number) => void;
 
-export default function Todo({ text, id }: ITodo) {
+export default function Todo({ text, id, spendTime }: ITodo) {
   const [editOpen, setEditOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const setCount = useSetRecoilState(completedTodoCount);
@@ -111,12 +112,31 @@ export default function Todo({ text, id }: ITodo) {
   const [editMode, setEditMode] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
 
+  const [activateTodo, setActivateTodo] = useRecoilState(activeTodoState);
+   const {seconds}= useRecoilValue(timerDataState);
+   const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
+   
+   
+   useEffect(()=>{
+    if(activeTodoSpendTime){
+      setActivateTodoSpendTime(activeTodoSpendTime+1);
+      console.log(activeTodoSpendTime);
+    }
+
+   },[seconds])
+  const onActivated = () => {
+    if (id === activateTodo.id) {
+      setActivateTodo({ id: undefined });
+    } else {
+      setActivateTodo({ id });
+    }
+  };
+
   const onChecked = () => {
     setIsChecked((prev) => !prev);
     setCount((prevCount) => (isChecked ? prevCount - 1 : prevCount + 1));
     setEditOpen(false);
   };
-
   const onDelete = () => {
     if (isChecked) {
       setCount((prevCount) => prevCount - 1);
@@ -134,7 +154,7 @@ export default function Todo({ text, id }: ITodo) {
   const handleEdit = () => {
     console.log(editInputRef);
     const newText = editInputRef.current?.value;
-    const newTodo = { id: Date.now(), text: newText as any };
+    const newTodo:ITodo = { id: Date.now(), text: newText as any ,spendTime:0};
 
     setTodo((oldToDos) => {
       const editIndex = oldToDos.findIndex((toDo) => toDo.id === id);
@@ -161,7 +181,12 @@ export default function Todo({ text, id }: ITodo) {
   };
 
   return (
-    <TodoItem isChecked={isChecked}>
+    <TodoItem
+      isChecked={isChecked}
+      onClick={() => {
+        onActivated();
+      }}
+    >
       {editMode ? (
         <>
           <input type="text" ref={editInputRef} />

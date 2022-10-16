@@ -1,10 +1,16 @@
 import { TimerResult } from "react-timer-hook";
-import { atom } from "recoil";
-import { ITodo } from "../pages/atoms";
+import { atom, selector } from "recoil";
+import { ITodo, todoState } from "../pages/atoms";
 
 export interface activeTodo{
-  id:Pick<ITodo, "id">
+  id:Pick<ITodo, "id">|number|undefined
 }
+
+export const activeTodoState = atom<activeTodo>({
+  key:"activeTodo",
+  default:{id:undefined},
+})
+
 export interface SessionAndBreak {
   session: number;
   breakTime: number;
@@ -13,7 +19,7 @@ export interface SessionAndBreak {
 export const sessionAndBreakState = atom<SessionAndBreak>({
   key: "SessionAndBreak",
   default: {
-    session:1,
+    session:25,
     breakTime:5
   },
 });
@@ -47,3 +53,22 @@ export const timerModeState = atom<timerMode>({
 
 //     }
 // })
+
+export const activeTodoSelector = selector({
+  key:"ActiveTodoSelector",
+  get:({get}) =>{
+    const activeTodoId = get(activeTodoState);
+    if(activeTodoId.id!=undefined){
+      const todoList = get(todoState);  
+      return todoList.find(element => element.id===activeTodoId.id);
+    }
+    else{
+      return undefined
+    }
+  },
+  set:({set,get},newValue)=>{
+      const activeTodo = get(activeTodoSelector);
+        set(activeTodoSelector,newValue);
+      }
+  })
+

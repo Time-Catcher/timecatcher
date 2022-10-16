@@ -70,7 +70,7 @@ export default function TodoList() {
           <CreateTodo />
           {todos.length
             ? todos.map((toDo) => (
-                <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
+                <Todo key={toDo.id} text={toDo.text} id={toDo.id} spendTime={toDo.spendTime}/>
               ))
             : null}
           <RecordBtn

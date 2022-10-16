@@ -65,9 +65,9 @@ export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const setTodo = useSetRecoilState(todoState);
   const [할일, 셋함수] = useRecoilState(todoState);
-  console.log(할일);
+  // console.log(할일);
   const handleTodo = ({ todo }: IForm) => {
-    setTodo((preTodo) => [{ text: todo, id: Date.now() }, ...preTodo]);
+    setTodo((preTodo) => [{ text: todo, id: Date.now() ,spendTime:0}, ...preTodo]);
     setValue("todo", "");
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
