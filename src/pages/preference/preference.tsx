@@ -4,7 +4,7 @@ import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
 import {
   darkModeState,
-  restTimeState,
+  // restTimeState,
   strictModeState,
   whiteNoiseState,
 } from "./atoms";
@@ -22,13 +22,22 @@ import {
   Title,
   ModeWrapper,
 } from "./style";
+
 import Modal from "../../components/Modal";
 import Retrospect from "../retrospect/retrospect";
+import { sessionAndBreakState } from "../../atoms/atoms";
 
-const Preference = () => {
-  const [, setRestTimeSet] = useRecoilState(restTimeState);
+
+interface PreferenceProps{
+  onClose:()=>void
+}
+
+const Preference = ({onClose}:PreferenceProps) => {
+  const [, setSessionAndBreakTime] = useRecoilState(sessionAndBreakState);
   const handleChangeRestTimeSet = (value: string) => {
-    setRestTimeSet({ restTimeSet: value });
+     const [ session,breakTime ]= value.split("-").map(Number)
+     setSessionAndBreakTime({ session,breakTime });
+
   };
 
   const [, setWhiteNoiseSet] = useRecoilState(whiteNoiseState);
@@ -45,16 +54,14 @@ const Preference = () => {
   const handleToggleDarkMode = () => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
-
   const [helpModalState, setHelpModalState] = useState(false);
-
   return (
     <Background>
       <PrefContainer>
         <HeaderBar>
           <OptionImage src="/settings_image.png"></OptionImage>
           <Title>설정</Title>
-          <ExitButton src="/close_button.png"></ExitButton>
+          <ExitButton src="/close_button.png" onClick={onClose}></ExitButton>
         </HeaderBar>
         <RowLine />
 
