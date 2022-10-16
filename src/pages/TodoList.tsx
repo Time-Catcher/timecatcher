@@ -9,7 +9,7 @@ const GlobalContainer = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
-  // display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -17,14 +17,17 @@ const GlobalContainer = styled.div`
 
 const TodoBody = styled.div`
   display: flex;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding: 16px;
+  padding: 50px 16px 16px 16px;
   gap: 16px;
-  width: 420px;
   background: #fffbff;
   border-radius: 15px 15px 0px 0px;
+  box-sizing: border-box;
 `;
 
 const RecordBtn = styled.button`
@@ -34,7 +37,6 @@ const RecordBtn = styled.button`
   align-items: center;
   padding: 10px;
   gap: 10px;
-
   width: 405px;
   height: 64px;
   background: #6750a4;
@@ -65,21 +67,21 @@ export default function TodoList() {
   };
   return (
     <>
-      <GlobalContainer>
-        <TodoBody>
-          <CreateTodo />
-          {todos.length
-            ? todos.map((toDo) => (
-                <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
-              ))
-            : null}
-          <RecordBtn
-            disabled={!(completedCount === todos.length && todos.length > 0)}
-          >
-            회고 버튼
-          </RecordBtn>
-        </TodoBody>
-      </GlobalContainer>
+      {/* <GlobalContainer>
+      </GlobalContainer> */}
+      <TodoBody>
+        <CreateTodo />
+        {todos.length
+          ? todos.map((toDo) => (
+              <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
+            ))
+          : null}
+        <RecordBtn
+          disabled={!(completedCount === todos.length && todos.length > 0)}
+        >
+          회고 버튼
+        </RecordBtn>
+      </TodoBody>
     </>
   );
 }
