@@ -7,7 +7,8 @@ export interface IForm {
 export interface ITodo {
   text: string;
   id: number;
-  spendTime:number;// 초기준입니다. util함수로 변환해서 사용해야 합니다.
+  min:number;// 초기준입니다. util함수로 변환해서 사용해야 합니다.
+  sec:number;// 초기준입니다. util함수로 변환해서 사용해야 합니다.
 }
 
 export const todoState = atom<ITodo[]>({
@@ -27,21 +28,21 @@ export const completedTodoCount = atom({
 //   },
 // });
 
-export const activeTodoSpendTimeState = selector({
-  key: "todoSpendTimeSelector",
-  get:({get}) =>{
-    const activeTodo = get(activeTodoSelector);
-    if(activeTodo){
-      return activeTodo.spendTime;
-    }
-    else{
-      return undefined;
-    }
-  },
-  set:({set,get},newValue)=>{
-      const activeTodo = get(activeTodoSpendTimeState);
-      if(activeTodo){
-          set(activeTodoSpendTimeState,newValue);
-      }
-  }
-})
+// export const activeTodoSpendTimeState = selector({
+//   key: "todoSpendTimeSelector",
+//   get:({get}) =>{
+//     const activeTodo = get(activeTodoSelector);
+//     if(activeTodo){
+//       return activeTodo.spendTime;
+//     }
+//     else{
+//       return undefined;
+//     }
+//   },
+//   set:({set,get},newValue)=>{
+//       const activeTodo = get(activeTodoSpendTimeState);
+//       if(activeTodo){
+//           set(activeTodoSpendTimeState,newValue);
+//       }
+//   }
+// })

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { activeTodoSpendTimeState, completedTodoCount, ITodo,  todoState } from "./atoms";
+import { /*activeTodoSpendTimeState,*/ completedTodoCount, ITodo,  todoState } from "./atoms";
 import PomoCount from "./img/Pomocounter.png";
 import Dots from "./img/Dot.png";
 import Chk from "./img/checkbox.png";
@@ -104,7 +104,7 @@ interface IsChecked {
 
 type Count = (test: number) => void;
 
-export default function Todo({ text, id, spendTime }: ITodo) {
+export default function Todo({ text, id, min,sec }: ITodo) {
   const [editOpen, setEditOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const setCount = useSetRecoilState(completedTodoCount);
@@ -114,16 +114,16 @@ export default function Todo({ text, id, spendTime }: ITodo) {
 
   const [activateTodo, setActivateTodo] = useRecoilState(activeTodoState);
    const {seconds}= useRecoilValue(timerDataState);
-   const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
+  //  const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
    
    
-   useEffect(()=>{
-    if(activeTodoSpendTime){
-      setActivateTodoSpendTime(activeTodoSpendTime+1);
-      console.log(activeTodoSpendTime);
-    }
+  //  useEffect(()=>{
+  //   if(activeTodoSpendTime){
+  //     setActivateTodoSpendTime(activeTodoSpendTime+1);
+  //     console.log(activeTodoSpendTime);
+  //   }
 
-   },[seconds])
+  //  },[seconds])
   const onActivated = () => {
     if (id === activateTodo.id) {
       setActivateTodo({ id: undefined });
@@ -154,7 +154,7 @@ export default function Todo({ text, id, spendTime }: ITodo) {
   const handleEdit = () => {
     console.log(editInputRef);
     const newText = editInputRef.current?.value;
-    const newTodo:ITodo = { id: Date.now(), text: newText as any ,spendTime:0};
+    const newTodo:ITodo = { id: Date.now(), text: newText as any ,min:0,sec:0};
 
     setTodo((oldToDos) => {
       const editIndex = oldToDos.findIndex((toDo) => toDo.id === id);
