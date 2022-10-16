@@ -35,10 +35,6 @@ const TodoItem = styled.div<IsChecked>`
     props.isChecked ? "rgba(153, 121, 173,0.5)" : "rgba(122, 54, 212, 0.5)"};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const ChkBox = styled.div`
@@ -154,7 +150,7 @@ export default function Todo({ text, id }: ITodo) {
       const deleteIndex = oldToDos.findIndex((toDo) => toDo.id === id);
       return [
         ...oldToDos.slice(0, deleteIndex),
-        ...oldToDos.slice(deleteIndex + 1),
+        ...oldToDos.slice(deleteIndex + 1)
       ];
     });
   };
@@ -169,7 +165,7 @@ export default function Todo({ text, id }: ITodo) {
       return [
         ...oldToDos.slice(0, editIndex),
         newTodo,
-        ...oldToDos.slice(editIndex + 1),
+        ...oldToDos.slice(editIndex + 1)
       ];
     });
   };
