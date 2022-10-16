@@ -10,15 +10,17 @@ import ImgSrc from "./img/AddImg.png";
 const Form = styled.form`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  gap: 10px;
-  width: 389px;
+  padding: 8px;
+  margin-bottom: 15px;
+  width: 405px;
   height: 64px;
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
+  gap: 10px;
+  box-sizing: border-box;
+  background-color: "#fffbff";
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
 `;
 
 const AddBtn = styled.button`
@@ -26,6 +28,8 @@ const AddBtn = styled.button`
   width: 16px;
   height: 16px;
   background: url(${ImgSrc}) center;
+  background-size: cover;
+  margin-left: 8px;
   &:hover {
     cursor: pointer;
   }
@@ -36,16 +40,14 @@ const Input = styled.input`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  border: none;
   padding: 8px;
   gap: 4px;
-
-  width: 132px;
+  background: #fffbff;
+  width: 365px;
   height: 34px;
-
   border-radius: 15px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
+  box-sizing: border-box;
 `;
 
 export default function CreateTodo() {
@@ -65,7 +67,7 @@ export default function CreateTodo() {
         <Input
           placeholder="할일에 작업 추가하기"
           {...register("todo", {
-            required: "빈칸입니다! 할 일을 채워주세요!",
+            required: "빈칸입니다! 할 일을 채워주세요!"
           })}
         />
       </Form>

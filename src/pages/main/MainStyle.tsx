@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import Drawer from 'react-modern-drawer';
+import backgroundImg from '../img/pot.png';
 
 export const Main = styled.div`
     display: flex;
@@ -7,16 +9,35 @@ export const Main = styled.div`
 `
 
 export const MainPageWrapper = styled.div`
-    width: 360px;
-    height: 800px;
-    background-color: #6750A4;
+    width: 100%;
+    height: 100vh;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    background-repeat: no-repeat;
+    background-size: 400% 400%;
+    animation: backgroundChange 20s ease-in-out infinite;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     position: relative;
-`
 
+    @keyframes backgroundChange {
+        0% {
+          background-position: 0 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0 50%;
+        }
+      }
+`
+export const TimerTodoWrapper = styled.div`
+    display:flex;  
+    flex-direction:column;
+`
 export const MainTimerWrapper = styled.div`
     width: 196px;
     height: 298px;
@@ -34,9 +55,10 @@ export const MainLogo = styled.div`
 
 export const MainLogoTitle = styled.span`
     font-weight: 400;
-    font-size: 45px;
+    font-size: 46px;
     line-height: 52px;
     color: #ffffff;
+    font-family: 'Splash', cursive;
 `
 
 export const MainQuestion = styled.button`
@@ -45,6 +67,7 @@ export const MainQuestion = styled.button`
     border: none;
     border-radius: 50%;
     cursor: pointer;
+    opacity: 0.7;
 
     &:hover {
         background-color: #EFEFEF;
@@ -64,8 +87,7 @@ export const MainBBomodoro = styled.div`
     margin: 10px;
     font-size: 32px;
     color: #ffffff;
-    background-color: #00744D;
-    border: 5px solid #A97C51;
+    background-image: url(${backgroundImg});
     `
 
 export const MainTimerButton = styled.div`
@@ -90,35 +112,43 @@ export const StopButton = styled.img`
     cursor: pointer;
 `
 
-export const MainDropUp = styled.img`
+export const MainDropRight = styled.img`
     width: 64px;
     height: 64px;
     cursor: pointer;
+    transform:rotate(0.25turn);
 `
 
-export const MainDropDown = styled.img`
+export const MainDropLeft = styled.img`
     width: 64px;
     height: 64px;
     cursor: pointer;
+    transform:rotate(0.25turn);
+
 `
 
 export const BBoMoDescModal = styled.div`
     position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    right:auto;
     z-index: 10000;
-    width: 320px;
+    width: 600px;
     height: 672px;
-    background-color: #ffffff;
+    background-color: #FFFBFF;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
+    justify-content : space-evenly;
     align-items: center;
-    padding: 16px 32px;
+    padding: 16px 0;
 `
 
 export const BBoMoDescTitleWrapper = styled.div`
-    width: 256px;
-    height: 24px;
+    width: 530px;
+    height: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -126,25 +156,26 @@ export const BBoMoDescTitleWrapper = styled.div`
 
 export const BBoMoDescTitle = styled.span`
     font-weight: 500;
-    font-size: 14px;
+    font-size: 30px;
 `
 
 export const BBoMoModalQuitButton = styled.img`
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
 `
 
 export const BBoMoDescHr = styled.hr`
-    width: 256px;
+    width: 550px;
     border: 1px solid #7A757F;
 `
 
 export const BBoMoDesc = styled.div`
     padding: 10px;
-    width: 256px;
-    height: 444px;
-    text-align: center;
+    // width: 256px;
+    // height: 444px;
+    text-align: center;    
+
 `
 
 export const BBoMoDescCat = styled.img`
@@ -152,8 +183,10 @@ export const BBoMoDescCat = styled.img`
     height: 170px;
 `
 
-
-
+export const LeftDrawer = styled(Drawer)`
+    display: flex;
+    font-size:0;
+`
 
 
 export const MainTodoListWrapper = styled.div``

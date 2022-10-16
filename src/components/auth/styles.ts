@@ -13,8 +13,8 @@ const AuthContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 400px;
-  padding: 50px 0;
-  margin-top: 50px;
+  padding: 30px 0;
+  margin-top: 20px;
   border: 1px solid #7a757f;
   border-radius: 8px;
   background-color: #fff;
@@ -64,7 +64,7 @@ const AuthInputBox = styled.div`
 const ValidateError = styled.p`
   position: absolute;
   font-size: 12px;
-  bottom: -40px;
+  bottom: -22px;
   color: red;
 `;
 

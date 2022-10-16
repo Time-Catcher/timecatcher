@@ -12,6 +12,8 @@ import {
   SubmitBtn,
   ToggleAuth,
 } from "./styles";
+import { useNavigate } from "react-router";
+
 interface IFormInput {
   email: string;
   nickname: string;
@@ -20,6 +22,7 @@ interface IFormInput {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,6 +38,8 @@ export default function SignUp() {
         updateProfile(user, {
           displayName: data.nickname,
         });
+        alert("회원가입을 축하한다냥");
+        navigate("/");
       })
       .catch((error) => {
         alert(error.message);
@@ -57,23 +62,24 @@ export default function SignUp() {
                   "이메일 형식을 지켜주세요.",
               })}
             />
+            {errors.email && (
+              <ValidateError>{errors.email?.message}</ValidateError>
+            )}
           </AuthInputBox>
-          {errors.email && (
-            <ValidateError>{errors.email?.message}</ValidateError>
-          )}
           <AuthInputBox>
             <label htmlFor="nickname">별명</label>
             <input
               {...register("nickname", {
                 required: "필수 입력값입니다.",
                 validate: (nickname) =>
-                  nickname.trim().length >= 3 || "닉네임 형식을 지켜주세요.",
+                  nickname.trim().length >= 3 ||
+                  "닉네임은 3글자 이상 입력해주세요.",
               })}
             />
+            {errors.nickname && (
+              <ValidateError>{errors.nickname?.message}</ValidateError>
+            )}
           </AuthInputBox>
-          {errors.nickname && (
-            <ValidateError>{errors.nickname?.message}</ValidateError>
-          )}
           <AuthInputBox>
             <label htmlFor="password">비밀번호</label>
             <input
@@ -81,13 +87,13 @@ export default function SignUp() {
               {...register("password", {
                 required: "필수 입력값입니다.",
                 validate: (password) =>
-                  password.length >= 8 || "패스워드 형식을 지켜주세요.",
+                  password.length >= 8 || "패스워드는 8글자 이상 입력해주세요.",
               })}
             />
+            {errors.password && (
+              <ValidateError>{errors.password?.message}</ValidateError>
+            )}
           </AuthInputBox>
-          {errors.password && (
-            <ValidateError>{errors.password?.message}</ValidateError>
-          )}
           <AuthInputBox>
             <label htmlFor="passwordCheck">비밀번호 확인</label>
             <input
@@ -99,10 +105,10 @@ export default function SignUp() {
                   "비밀번호가 일치하지 않습니다.",
               })}
             />
+            {errors.passwordCheck && (
+              <ValidateError>{errors.passwordCheck?.message}</ValidateError>
+            )}
           </AuthInputBox>
-          {errors.passwordCheck && (
-            <ValidateError>{errors.passwordCheck?.message}</ValidateError>
-          )}
           <SubmitBtn>
             <span>회원가입</span>
           </SubmitBtn>

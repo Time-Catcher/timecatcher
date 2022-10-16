@@ -13,6 +13,10 @@ export const todoState = atom<ITodo[]>({
   default: [],
 });
 
+export const completedTodoCount = atom({
+  key: "count",
+  default: 0,
+});
 // export const todoSelector = selector({
 //   key: "todoSelector",
 //   get: ({ get }) => {
