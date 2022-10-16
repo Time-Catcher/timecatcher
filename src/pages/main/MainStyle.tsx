@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Drawer from 'react-modern-drawer';
 
 export const Main = styled.div`
     display: flex;
@@ -154,7 +155,6 @@ export const BBoMoDescCat = styled.img`
     width: 170px;
     height: 170px;
 `
-
 
 
 
