@@ -11,14 +11,14 @@ const Router = () => {
   return (
     <BrowserRouter>
       <RecoilRoot>
-        <GlobalStyle />
-        <Routes>
-          {/* 메인 페이지 로그인 페이지로 변경 부탁드립니다. */}
-          <Route path="/" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/preference" element={<Preference />} />
-        </Routes>
+          <GlobalStyle />
+          <Routes>
+            {/* 메인 페이지 로그인 페이지로 변경 부탁드립니다. */}
+            <Route path="/" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/preference" element={<Preference />} />
+          </Routes>
       </RecoilRoot>
     </BrowserRouter>
   );
