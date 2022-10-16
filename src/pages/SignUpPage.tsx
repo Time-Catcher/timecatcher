@@ -1,14 +1,13 @@
 import React from "react";
 import SignUp from "../components/auth/SignUp";
-import { auth } from "../firebaseConfig";
-import { useNavigate } from "react-router";
+import { firebaseConfig } from "../firebaseConfig";
+import { Navigate } from "react-router";
 import { AuthContainer, AuthLogo } from "./SignInPage";
 
 export default function SignUpPage() {
-  const navigate = useNavigate();
-
-  if (auth.currentUser) {
-    navigate("/main");
+  const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  if (sessionStorage.getItem(_session_key)) {
+    return <Navigate to="/main" />;
   }
 
   return (

@@ -34,7 +34,21 @@ import TodoList from "../TodoList";
 import Todo from "../Todo";
 import { ITodo } from "../atoms";
 import { OnMainTodo } from "../../components/main/OnMainTodo";
+import { firebaseConfig } from "../../firebaseConfig";
+import { Navigate } from "react-router";
+// import NotificationSound from "../../asset/notification-sound.mp3"
+// import React, { useState } from 'react'
+// import MainTimer from '../../components/main/MainTimer';
+// import MainTodoList from '../../components/main/MainTodoList';
+// import { BBoMoDesc, BBoMoDescCat, BBoMoDescHr, BBoMoDescModal, BBoMoDescTitle, BBoMoDescTitleWrapper, BBoMoModalQuitButton, Main, MainDropDown, MainDropUp, MainPageWrapper } from './MainStyle';
+// import Mocktest from "./Mocktest";
 const MainPage = () => {
+  const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  if (!sessionStorage.getItem(_session_key)) {
+    return <Navigate to="/" />;
+  }
+
+
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
@@ -66,14 +80,11 @@ const MainPage = () => {
         }
       },
     });
-    const[time,setTime] = useState(0);
-  // useEffect(()=>{
-  //   console.log(time);
-  //   setTime(time+1);
-  // },[seconds])
+
   useEffect(() => {
     restart(minutesToDate(sessionAndBreak[timerMode]), false);
   }, [timerMode, sessionAndBreak]);
+
   useEffect(() => {
     setTimerData({ seconds, minutes, isRunning });
     setTimerFunction({ start, pause, restart, resume });
@@ -82,8 +93,9 @@ const MainPage = () => {
   const [isActiveQuestion, setIsActiveQuestion] = useState(false);
 
   const handleActiveQuestion = () => {
-    setIsActiveQuestion(true);
-  };
+      setIsActiveQuestion(true);
+  }
+
 
   const closeActiveQuestion = () => {
     setIsActiveQuestion(false);
@@ -113,8 +125,6 @@ const MainPage = () => {
   const toggleRightDrawer = () => {
     setRightDrawerOpen((prevState) => !prevState);
   };
-
-  const activeTodo: ITodo | undefined = useRecoilValue(activeTodoSelector);
 
   return (
     <Main>
@@ -162,6 +172,7 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
+      {/* <Mocktest /> */}
     </Main>
   );
 

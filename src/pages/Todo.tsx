@@ -206,19 +206,19 @@ export default function Todo({ text, id, spendTime }: ITodo) {
         </>
       )}
 
-      {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
-      {!isChecked && editOpen ? (
-        <EditGroup>
-          <button
-            onClick={onDelete}
+        {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
+        {!isChecked && editOpen ? (
+          <EditGroup>
+            <button
+              onClick={onDelete}
             style={{ backgroundColor: "#BA1A1A", color: "#fffbff" }}
-          >
-            삭제
-          </button>
+            >
+              삭제
+            </button>
           <button onClick={onEditMode}>수정</button>
-        </EditGroup>
-      ) : null}
-    </TodoItem>
+          </EditGroup>
+        ) : null}
+      </TodoItem>
   );
 }
 

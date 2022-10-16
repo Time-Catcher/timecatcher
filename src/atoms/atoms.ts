@@ -1,8 +1,10 @@
+
 import { TimerResult } from "react-timer-hook";
 import { atom, selector } from "recoil";
 import { ITodo, todoState } from "../pages/atoms";
 
 export interface activeTodo{
+
   id:Pick<ITodo, "id">|number|undefined
 }
 
@@ -50,7 +52,6 @@ export const timerModeState = atom<timerMode>({
 // export const breakTimerState = atom<BreakTimerState>({
 //     key:"breakTimer",
 //     default:{
-
 //     }
 // })
 
@@ -71,4 +72,16 @@ export const activeTodoSelector = selector({
         set(activeTodoSelector,newValue);
       }
   })
+
+type Auth = {
+  uid: string;
+  email: string;
+  displayName: string;
+  isLogined: boolean;
+};
+
+export const authState = atom<Auth>({
+  key: "auth-state",
+  default: { uid: "", displayName: "", isLogined: false } as Auth,
+});
 

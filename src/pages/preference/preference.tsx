@@ -1,7 +1,8 @@
 import { useRecoilState } from "recoil";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
+import { getAuth, signOut } from "firebase/auth";
 import {
   darkModeState,
   // restTimeState,
@@ -22,22 +23,22 @@ import {
   Title,
   ModeWrapper,
 } from "./style";
-
+import { useNavigate } from "react-router";
 import Modal from "../../components/Modal";
-import Retrospect from "../retrospect/retrospect";
 import { sessionAndBreakState } from "../../atoms/atoms";
+import StrictMode from "../../components/StrcitMode";
 
-
-interface PreferenceProps{
-  onClose:()=>void
+interface PreferenceProps {
+  onClose: () => void;
 }
 
-const Preference = ({onClose}:PreferenceProps) => {
+const Preference = ({ onClose }: PreferenceProps) => {
+  const navigate = useNavigate();
+
   const [, setSessionAndBreakTime] = useRecoilState(sessionAndBreakState);
   const handleChangeRestTimeSet = (value: string) => {
-     const [ session,breakTime ]= value.split("-").map(Number)
-     setSessionAndBreakTime({ session,breakTime });
-
+    const [session, breakTime] = value.split("-").map(Number);
+    setSessionAndBreakTime({ session, breakTime });
   };
 
   const [, setWhiteNoiseSet] = useRecoilState(whiteNoiseState);
@@ -54,7 +55,19 @@ const Preference = ({onClose}:PreferenceProps) => {
   const handleToggleDarkMode = () => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
+
   const [helpModalState, setHelpModalState] = useState(false);
+
+  const handleChangeHelpModalState = () => {
+    setHelpModalState(!helpModalState);
+  }
+  
+  const handleSignOutClick = () => {
+    const auth = getAuth();
+    signOut(auth);
+    navigate("/");
+  };
+
   return (
     <Background>
       <PrefContainer>
@@ -77,13 +90,11 @@ const Preference = ({onClose}:PreferenceProps) => {
             <OptionTitle>엄격 기록모드 On/Off</OptionTitle>
             <HelpLabel
               src="/mode_help_label.png"
-              onClick={() => {
-                setHelpModalState(!helpModalState);
-              }}
+              onClick={handleChangeHelpModalState}
             ></HelpLabel>
 
             <Modal modalState={helpModalState}>
-              <Retrospect></Retrospect>
+              <StrictMode handleExit={handleChangeHelpModalState}></StrictMode>
             </Modal>
           </ModeWrapper>
 
@@ -99,7 +110,9 @@ const Preference = ({onClose}:PreferenceProps) => {
             onChange={handleChangeWhiteNoiseSet}
           ></DropDown>
 
-          <LogoutButton type="button">로그아웃</LogoutButton>
+          <LogoutButton type="button" onClick={handleSignOutClick}>
+            로그아웃
+          </LogoutButton>
         </OptionContainer>
       </PrefContainer>
     </Background>
