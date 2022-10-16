@@ -1,3 +1,4 @@
+import { useSetRecoilState } from "recoil";
 import { useForm, SubmitHandler } from "react-hook-form";
 import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -13,6 +14,7 @@ import {
   SubmitBtn,
   ToggleAuth,
 } from "./styles";
+import { authState } from "../../atoms/atoms";
 interface IFormInput {
   email: string;
   password: string;
@@ -25,12 +27,20 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const setAuthState = useSetRecoilState(authState);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        const { uid, email, displayName } = userCredential.user;
+
+        setAuthState({
+          uid,
+          email: email ?? "",
+          displayName: displayName ?? "",
+          isLogined: true,
+        });
         navigate("/main");
       })
       .catch((error) => {
