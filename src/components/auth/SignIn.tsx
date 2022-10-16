@@ -1,3 +1,4 @@
+import { useSetRecoilState } from "recoil";
 import { useForm, SubmitHandler } from "react-hook-form";
 import React from "react";
 import {
@@ -17,6 +18,7 @@ import {
   SubmitBtn,
   ToggleAuth,
 } from "./styles";
+import { authState } from "../../atoms/atoms";
 interface IFormInput {
   email: string;
   password: string;
@@ -29,17 +31,14 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<IFormInput>();
 
+  const setAuthState = useSetRecoilState(authState);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     setPersistence(auth, browserSessionPersistence)
       .then(() => {
         return signInWithEmailAndPassword(auth, data.email, data.password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-
-            console.log("user");
-            console.log(user);
+          .then(() => {
             navigate("/main");
           })
           .catch((error) => {

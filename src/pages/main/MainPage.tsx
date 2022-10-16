@@ -1,3 +1,4 @@
+
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useState, useEffect, useRef } from "react";
@@ -33,11 +34,17 @@ import TodoList from "../TodoList";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
 // import NotificationSound from "../../asset/notification-sound.mp3"
+// import React, { useState } from 'react'
+// import MainTimer from '../../components/main/MainTimer';
+// import MainTodoList from '../../components/main/MainTodoList';
+// import { BBoMoDesc, BBoMoDescCat, BBoMoDescHr, BBoMoDescModal, BBoMoDescTitle, BBoMoDescTitleWrapper, BBoMoModalQuitButton, Main, MainDropDown, MainDropUp, MainPageWrapper } from './MainStyle';
+// import Mocktest from "./Mocktest";
 const MainPage = () => {
   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
   if (!sessionStorage.getItem(_session_key)) {
     return <Navigate to="/" />;
   }
+
 
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
@@ -79,6 +86,10 @@ const MainPage = () => {
   }, [seconds, minutes, isRunning, start, pause, restart, resume]);
 
   const [isActiveQuestion, setIsActiveQuestion] = useState(false);
+
+  const handleActiveQuestion = () => {
+      setIsActiveQuestion(true);
+  }
 
   const handleActiveQuestion = () => {
     setIsActiveQuestion(true);
@@ -159,6 +170,7 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
+      {/* <Mocktest /> */}
     </Main>
   );
 
