@@ -21,15 +21,18 @@ import {
   BBoMoDescTitleWrapper,
   BBoMoModalQuitButton,
   Main,
-  MainDropDown,
-  MainDropUp,
+  MainDropLeft,
+  MainDropRight,
   MainPageWrapper,
+  TimerTodoWrapper,
 } from "./MainStyle";
 import addNotification from 'react-push-notification';
+import Preference from '../preference/preference';
+import { LeftDrawer } from './MainStyle';
 // import NotificationSound from "../../asset/notification-sound.mp3"
 const MainPage = () => {
-  const [topDrawerOpen,setTopDrawerOpen] =useState(false);
-  const [bottomDrawerOpen,setBottomDrawerOpen] = useState(false);
+  const [leftDrawerOpen,setLeftDrawerOpen] =useState(false);
+  const [rightDrawerOpen,setRightDrawerOpen] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
   const ssionAndBreak = useRecoilValue(sessionAndBreakState);
   const [sessionAndBreakTime, setSessionAndBreakTime] = useState(ssionAndBreak);
@@ -83,40 +86,43 @@ const MainPage = () => {
     });
     audioPlayer.current?.play();
   };
-  const toggleTopDrawer =() => {
-    setTopDrawerOpen((prevState) => !prevState)
+  const toggleLeftDrawer =() => {
+    setLeftDrawerOpen((prevState) => !prevState)
 }
-  const toggleBottomDrawer = () =>{
-    setBottomDrawerOpen((prevState)=>!prevState)
+  const toggleRightDrawer = () =>{
+    setRightDrawerOpen((prevState)=>!prevState)
   }
   return (
     <Main>
-      {/* <button onClick={toggleTopDrawer}>테스트</button> */}
-      <Drawer   className='top-drawer'
-                open={topDrawerOpen}
-                onClose={toggleTopDrawer}
-                direction='top'
+      {/* <button onClick={toggleLeftDrawer}>테스트</button> */}
+      <LeftDrawer   className='left-drawer'
+                open={leftDrawerOpen}
+                onClose={toggleLeftDrawer}
+                direction='left'
+                
+            >
+                <Preference onClose={toggleLeftDrawer}/>
+        </LeftDrawer>
+        <Drawer   className='right-drawer'
+                open={rightDrawerOpen}
+                onClose={toggleRightDrawer}
+                direction='right'
                 size={250}
             >
-                <div>Hello World</div>
-        </Drawer>
-        <Drawer   className='bottom-drawer'
-                open={bottomDrawerOpen}
-                onClose={toggleBottomDrawer}
-                direction='bottom'
-                size={250}
-            >
-                <div>Hello World</div>
+                <div>Todo 들어갈 자리</div>
         </Drawer>
       <audio ref={audioPlayer} src="notification-sound.mp3"/>
       
       <MainPageWrapper>
 
         <InfoModal />
-        <MainDropUp src="images/dropUpButton.png" onClick={toggleTopDrawer}/>
-        <MainTimer openModal={handleActiveQuestion} />
-        <MainTodoList />
-        <MainDropDown src="images/dropDownButton.png" onClick={toggleBottomDrawer}/>
+        <MainDropRight src="images/dropUpButton.png" onClick={toggleLeftDrawer}/>
+        <TimerTodoWrapper>
+          <MainTimer openModal={handleActiveQuestion} />
+          <MainTodoList />
+        </TimerTodoWrapper>
+
+        <MainDropLeft src="images/dropDownButton.png" onClick={toggleRightDrawer}/>
       </MainPageWrapper>
     </Main>
   );

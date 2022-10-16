@@ -23,7 +23,11 @@ import {
   ModeWrapper,
 } from "./style";
 
-const Preference = () => {
+interface PreferenceProps{
+  onClose:()=>void
+}
+
+const Preference = ({onClose}:PreferenceProps) => {
   const [, setRestTimeSet] = useRecoilState(restTimeState);
   const handleChangeRestTimeSet = (value: string) => {
     setRestTimeSet({ restTimeSet: value });
@@ -50,7 +54,7 @@ const Preference = () => {
         <HeaderBar>
           <OptionImage src="/settings_image.png"></OptionImage>
           <Title>설정</Title>
-          <ExitButton src="/close_button.png"></ExitButton>
+          <ExitButton src="/close_button.png" onClick={onClose}></ExitButton>
         </HeaderBar>
         <RowLine />
 

@@ -8,16 +8,35 @@ export const Main = styled.div`
 `
 
 export const MainPageWrapper = styled.div`
-    width: 360px;
+    width: 100%;
     height: 800px;
-    background-color: #6750A4;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    background-repeat: no-repeat;
+    background-size: 400% 400%;
+    animation: backgroundChange 20s ease-in-out infinite;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     position: relative;
-`
 
+    @keyframes backgroundChange {
+        0% {
+          background-position: 0 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0 50%;
+        }
+      }
+`
+export const TimerTodoWrapper = styled.div`
+    display:flex;  
+    flex-direction:column;
+`
 export const MainTimerWrapper = styled.div`
     width: 196px;
     height: 298px;
@@ -38,6 +57,10 @@ export const MainLogoTitle = styled.span`
     font-size: 45px;
     line-height: 52px;
     color: #ffffff;
+    @font-face {
+        font-family: Amarillo;
+        src: url('styles/fonts/Amarillo.woff') format('woff');
+    }
 `
 
 export const MainQuestion = styled.button`
@@ -91,16 +114,19 @@ export const StopButton = styled.img`
     cursor: pointer;
 `
 
-export const MainDropUp = styled.img`
+export const MainDropRight = styled.img`
     width: 64px;
     height: 64px;
     cursor: pointer;
+    transform:rotate(0.25turn);
 `
 
-export const MainDropDown = styled.img`
+export const MainDropLeft = styled.img`
     width: 64px;
     height: 64px;
     cursor: pointer;
+    transform:rotate(0.25turn);
+
 `
 
 export const BBoMoDescModal = styled.div`
@@ -156,7 +182,10 @@ export const BBoMoDescCat = styled.img`
     height: 170px;
 `
 
-
+export const LeftDrawer = styled(Drawer)`
+    display: flex;
+    font-size:0;
+`
 
 
 export const MainTodoListWrapper = styled.div``
