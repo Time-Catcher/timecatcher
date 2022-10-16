@@ -16,7 +16,7 @@ export const sessionAndBreakState = atom<SessionAndBreak>({
     // session: 25,
     // breakTime: 5
     session:1,
-    breakTime:5
+    breakTime:1
   },
 });
 

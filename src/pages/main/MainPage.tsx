@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { useState, useEffect, useRef } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -23,10 +25,12 @@ import {
   MainDropUp,
   MainPageWrapper,
 } from "./MainStyle";
-
+import addNotification from 'react-push-notification';
+// import NotificationSound from "../../asset/notification-sound.mp3"
 const MainPage = () => {
+  const [topDrawerOpen,setTopDrawerOpen] =useState(false);
+  const [bottomDrawerOpen,setBottomDrawerOpen] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
-
   const ssionAndBreak = useRecoilValue(sessionAndBreakState);
   const [sessionAndBreakTime, setSessionAndBreakTime] = useState(ssionAndBreak);
   const setTimerFunction = useSetRecoilState(timerFunctionState);
@@ -38,12 +42,17 @@ const MainPage = () => {
       autoStart: false,
       onExpire: () => {
         if (timerMode === "breakTime") {
+        whenTimerModeChanged("휴식시간이 끝났다냥!","뽀모도로 타이머 돌리러 가라냥~!","앞으로 정해진 시간동안 열중하길바란다냥~~");
+
           setTimerMode("session");
         } else if (timerMode === "session") {
+        whenTimerModeChanged("휴식시간이다 냥!","얼마 되지 않는 시간이니 소중히 소비하라냥!!","시간이 될때 돌아오겠다냥.그때보자냥!");
+
           setTimerMode("breakTime");
         }
       },
     });
+
   useEffect(()=>{
     restart(minutesToDate(sessionAndBreakTime[timerMode]),false);
   },[timerMode])
@@ -61,15 +70,53 @@ const MainPage = () => {
   const closeActiveQuestion = () => {
     setIsActiveQuestion(false);
   };
+  const audioPlayer = useRef<any>(null);
 
+  const whenTimerModeChanged = (title:string,subtitle:string,message:string) => {
+    addNotification({
+        title: title,
+        subtitle: subtitle,
+        message: message,
+        theme: 'darkblue',
+        native: true, // when using native, your OS will handle theming.
+        icon:"images/wizardCat.png"
+    });
+    audioPlayer.current?.play();
+  };
+  const toggleTopDrawer =() => {
+    setTopDrawerOpen((prevState) => !prevState)
+}
+  const toggleBottomDrawer = () =>{
+    setBottomDrawerOpen((prevState)=>!prevState)
+  }
   return (
     <Main>
+      {/* <button onClick={toggleTopDrawer}>테스트</button> */}
+      <Drawer   className='top-drawer'
+                open={topDrawerOpen}
+                onClose={toggleTopDrawer}
+                direction='top'
+                size={250}
+            >
+                <div>Hello World</div>
+        </Drawer>
+        <Drawer   className='bottom-drawer'
+                open={bottomDrawerOpen}
+                onClose={toggleBottomDrawer}
+                direction='bottom'
+                size={250}
+            >
+                <div>Hello World</div>
+        </Drawer>
+      <audio ref={audioPlayer} src="notification-sound.mp3"/>
+      
       <MainPageWrapper>
+
         <InfoModal />
-        <MainDropUp src="images/dropUpButton.png" />
+        <MainDropUp src="images/dropUpButton.png" onClick={toggleTopDrawer}/>
         <MainTimer openModal={handleActiveQuestion} />
         <MainTodoList />
-        <MainDropDown src="images/dropDownButton.png" />
+        <MainDropDown src="images/dropDownButton.png" onClick={toggleBottomDrawer}/>
       </MainPageWrapper>
     </Main>
   );

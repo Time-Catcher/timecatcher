@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useTimer } from "react-timer-hook";
+import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   sessionAndBreakState,
