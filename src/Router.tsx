@@ -5,7 +5,7 @@ import MainPage from "./pages/main/MainPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import GlobalStyle from "./styles/GlobalStyles";
-import TodoList from "./pages/TodoList";
+// import TodoList from "./pages/TodoList";
 
 const Router = () => {
   return (
@@ -17,7 +17,7 @@ const Router = () => {
             <Route path="/" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/todo" element={<TodoList />} />
+            {/* <Route path="/todo" element={<TodoList />} /> */}
           </Routes>
       </RecoilRoot>
     </BrowserRouter>
