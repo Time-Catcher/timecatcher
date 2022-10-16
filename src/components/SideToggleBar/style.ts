@@ -5,7 +5,8 @@ const SideBarWrapper = styled.div`
   width: 52px;
   height: 32px;
   border-radius: 30px;
-  background-color: #6750a4;
+  background-color: ${({ sideBarActive }: { sideBarActive: boolean }) =>
+    sideBarActive ? "#6750a4" : "lightgray"};
 `;
 
 const SideBarRightToggle = styled.svg`

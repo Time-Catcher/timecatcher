@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { SideBarRightToggle, SideBarWrapper } from "./style";
 
-const SideToggleBar = () => {
+const SideToggleBar = ({ onToggle }: { onToggle: () => void }) => {
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
 
   const handleActiveSideBar = () => {
     setSideBarActive(!sideBarActive);
+    onToggle();
   };
 
   return (
-    <SideBarWrapper onClick={handleActiveSideBar}>
+    <SideBarWrapper onClick={handleActiveSideBar} sideBarActive={sideBarActive}>
       <SideBarRightToggle
         xmlns="http://www.w3.org/2000/svg"
         height="24px"
