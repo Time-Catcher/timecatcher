@@ -10,7 +10,7 @@ import {
   SubDropDownWrapper,
 } from "./style";
 
-const DropDown = ({ width, list }: dropDownType) => {
+const DropDown = ({ width, list, onChange }: dropDownType) => {
   const [curDropDownValue, setCurDropDownvalue] = useState<string>(list[0]);
 
   const [dropDownState, setDropDownState] = useState<boolean>(false);
@@ -48,6 +48,7 @@ const DropDown = ({ width, list }: dropDownType) => {
                   onClick={() => {
                     handleSelectDropDown(element);
                     setDropDownState(!dropDownState);
+                    onChange(element);
                   }}
                   value={element}
                 >
