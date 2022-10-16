@@ -1,6 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import React from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  setPersistence,
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
@@ -28,10 +32,19 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    signInWithEmailAndPassword(auth, data.email, data.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        navigate("/main");
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, data.email, data.password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+
+            console.log("user");
+            console.log(user);
+            navigate("/main");
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
       })
       .catch((error) => {
         alert(error.message);
@@ -65,7 +78,7 @@ export default function SignIn() {
               {...register("password", {
                 required: "필수 입력값입니다.",
                 validate: (password) =>
-                  password.length >= 8 || "패스워드 형식을 지켜주세요.",
+                  password.length >= 8 || "패스워드는 8글자 이상 입력해주세요.",
               })}
             />
             {errors.password && (

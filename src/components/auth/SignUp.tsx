@@ -10,8 +10,10 @@ import {
   AuthInputBox,
   ValidateError,
   SubmitBtn,
-  ToggleAuth
+  ToggleAuth,
 } from "./styles";
+import { useNavigate } from "react-router";
+
 interface IFormInput {
   email: string;
   nickname: string;
@@ -20,11 +22,12 @@ interface IFormInput {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -33,8 +36,10 @@ export default function SignUp() {
         const user = userCredential.user;
 
         updateProfile(user, {
-          displayName: data.nickname
+          displayName: data.nickname,
         });
+        alert("회원가입을 축하한다냥");
+        navigate("/");
       })
       .catch((error) => {
         alert(error.message);
@@ -54,7 +59,7 @@ export default function SignUp() {
                 required: "필수 입력값입니다.",
                 validate: (email) =>
                   (email.includes("@") && email.includes(".")) ||
-                  "이메일 형식을 지켜주세요."
+                  "이메일 형식을 지켜주세요.",
               })}
             />
             {errors.email && (
@@ -67,7 +72,8 @@ export default function SignUp() {
               {...register("nickname", {
                 required: "필수 입력값입니다.",
                 validate: (nickname) =>
-                  nickname.trim().length >= 3 || "닉네임 형식을 지켜주세요."
+                  nickname.trim().length >= 3 ||
+                  "닉네임은 3글자 이상 입력해주세요.",
               })}
             />
             {errors.nickname && (
@@ -81,7 +87,7 @@ export default function SignUp() {
               {...register("password", {
                 required: "필수 입력값입니다.",
                 validate: (password) =>
-                  password.length >= 8 || "패스워드 형식을 지켜주세요."
+                  password.length >= 8 || "패스워드는 8글자 이상 입력해주세요.",
               })}
             />
             {errors.password && (
@@ -96,7 +102,7 @@ export default function SignUp() {
                 required: true,
                 validate: (passwordCheck) =>
                   passwordCheck === watch("password") ||
-                  "비밀번호가 일치하지 않습니다."
+                  "비밀번호가 일치하지 않습니다.",
               })}
             />
             {errors.passwordCheck && (
