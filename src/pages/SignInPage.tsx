@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SignIn from "../components/auth/SignIn";
 import { Navigate } from "react-router";
 import styled from "styled-components";
@@ -9,6 +9,11 @@ export default function SignInPage() {
   if (sessionStorage.getItem(_session_key)) {
     return <Navigate to="/main" />;
   }
+
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `로그인 | 효율적인 시간관리 서비스, 타임캣처`;
+  }, []);
 
   return (
     <>

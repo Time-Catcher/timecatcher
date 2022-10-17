@@ -34,15 +34,13 @@ import addNotification from "react-push-notification";
 import Preference from "../preference/preference";
 import { LeftDrawer } from "./MainStyle";
 import TodoList from "../TodoList";
-import Todo from "../Todo";
-import { ITodo, todoState } from "../atoms";
+import { todoState } from "../atoms";
 import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
 import { firestore } from "../../firebaseConfig";
 import { collection, query, getDocs } from "firebase/firestore";
 import { authState } from "../../atoms/atoms";
-import styled from "styled-components";
 
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
@@ -135,6 +133,11 @@ const MainPage = () => {
         }
       },
     });
+
+    useEffect(() => {
+      const titleElement = document.getElementsByTagName("title")[0];
+      titleElement.innerHTML = `메인 | 효율적인 시간관리 서비스, 타임캣처`;
+    }, []);
 
   useEffect(() => {
     restart(minutesToDate(sessionAndBreak[timerMode]), false);

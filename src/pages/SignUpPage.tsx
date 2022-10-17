@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SignUp from "../components/auth/SignUp";
 import { firebaseConfig } from "../firebaseConfig";
 import { Navigate } from "react-router";
@@ -9,6 +9,11 @@ export default function SignUpPage() {
   if (sessionStorage.getItem(_session_key)) {
     return <Navigate to="/main" />;
   }
+
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `회원가입 | 효율적인 시간관리 서비스, 타임캣처`;
+  }, []);
 
   return (
     <>
