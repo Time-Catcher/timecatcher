@@ -11,12 +11,17 @@ export default function SignUpPage() {
   }
 
   return (
-    <AuthContainer>
-      <AuthLogo>
-        <img src="images/wizardCat.png" alt="위자드캣 logo" />
-        <h1>Cat`cher</h1>
-      </AuthLogo>
-      <SignUp />
-    </AuthContainer>
+    <>
+      <head>
+        <title>{`Time Cat'cher : 회원가입`}</title>
+      </head>
+      <AuthContainer>
+        <AuthLogo>
+          <img src="images/wizardCat.png" alt="위자드캣 logo" />
+          <h1>Cat`cher</h1>
+        </AuthLogo>
+        <SignUp />
+      </AuthContainer>
+    </>
   );
 }

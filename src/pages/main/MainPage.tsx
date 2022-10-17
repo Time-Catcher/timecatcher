@@ -1,5 +1,8 @@
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import { CircleMenu, CircleMenuItem, TooltipPlacement } from "react-circular-menu";
+import { FaMountain, FaCloudShowersHeavy, FaMoon, FaHome } from 'react-icons/fa';
+import { BsSunsetFill } from 'react-icons/bs';
 import { useState, useEffect, useRef } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -21,6 +24,7 @@ import {
   BBoMoDescTitleWrapper,
   BBoMoModalQuitButton,
   Main,
+  MainCircleTheme,
   MainDropLeft,
   MainDropRight,
   MainPageWrapper,
@@ -35,69 +39,76 @@ import { ITodo, todoState } from "../atoms";
 import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
+import { firestore } from "../../firebaseConfig";
+import { collection, query, getDocs } from "firebase/firestore";
+import { authState } from "../../atoms/atoms";
+import styled from "styled-components";
+
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
 // import MainTimer from '../../components/main/MainTimer';
 // import MainTodoList from '../../components/main/MainTodoList';
 // import { BBoMoDesc, BBoMoDescCat, BBoMoDescHr, BBoMoDescModal, BBoMoDescTitle, BBoMoDescTitleWrapper, BBoMoModalQuitButton, Main, MainDropDown, MainDropUp, MainPageWrapper } from './MainStyle';
 // import Mocktest from "./Mocktest";
+
+
 const MainPage = () => {
   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
   if (!sessionStorage.getItem(_session_key)) {
     return <Navigate to="/" />;
   }
   const activeId = useRecoilValue(activeTodoState);
-  const [todoList, setTodolist] = useRecoilState(todoState);
+  const [, setTodolist] = useRecoilState(todoState);
 
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
-  const [todoId, setTodoId] = useState<string | null>(null);
   const sessionAndBreak = useRecoilValue(sessionAndBreakState);
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
-  const userData = sessionStorage.getItem(_session_key) || "{}";
-  const { displayName } = JSON.parse(userData);
-  // //* 로그인 시 세션에 담긴 유저 정보 담기;
-  // const [authData, setAuthData] = useRecoilState(authState);
-  // useEffect(() => {
-  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
-  //   const userData = sessionStorage.getItem(_session_key);
+  const [themeValue, setThemeValue] = useState('');
+  //* 로그인 시 세션에 담긴 유저 정보 담기;
+  const [authData, setAuthData] = useRecoilState(authState);
+  useEffect(() => {
+    const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+    const userData = sessionStorage.getItem(_session_key);
+    if (userData) {
+      const { uid, email, displayName } = JSON.parse(userData).providerData[0];
+      setAuthData({ uid, email, displayName });
+    }
+  }, []);
 
-  //   if (userData) {
-  //     const { uid, email, displayName } = JSON.parse(userData);
-  //     setAuthData({ uid, email, displayName });
-  //   }
-  // }, []);
+  const handleSetTheme = (themeValue:string) => {
+    setThemeValue(themeValue);
+  }
+  /* 파이어 베이스에서 로그인 시  데이터 요청
+  useEffect(() => {
+    async function loadTodos() {
+      const q = query(collection(firestore, authData.uid));
+      const querySnapshot = await getDocs(q);
 
-  // //* 파이어 베이스에서 로그인 시  데이터 요청
-  // useEffect(() => {
-  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
-  //   const userData = sessionStorage.getItem(_session_key) || "{}";
-  //   const { uid } = JSON.parse(userData);
+    async function loadTodos() {
+      const q = query(collection(firestore, uid));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
+      if (querySnapshot) {
+        const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
+          id: doc.data().id,
+          text: doc.data().text,
+          min: doc.data().min,
+          sec: doc.data().sec,
+        }));
+        console.log(11111111111111);
+        setTodolist(todosInFirestore);
+      }
+    }
+    if (uid) {
+      loadTodos();
+    }
+  }, [authState]);
 
-  //   async function loadTodos() {
-  //     const q = query(collection(firestore, uid));
-  //     const querySnapshot = await getDocs(q);
-  //     console.log(querySnapshot);
-  //     if (querySnapshot) {
-  //       const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
-  //         id: doc.data().id,
-  //         text: doc.data().text,
-  //         min: doc.data().min,
-  //         sec: doc.data().sec,
-  //       }));
-  //       console.log(11111111111111);
-  //       setTodolist(todosInFirestore);
-  //     }
-  //   }
-  //   if (uid) {
-  //     loadTodos();
-  //   }
-  // }, [authState]);
-
-  //* 정보
-
+  * 정보
+*/
   //*---------------------------------------------------------------------
 
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
@@ -189,6 +200,35 @@ const MainPage = () => {
 
   return (
     <Main>
+      <MainCircleTheme
+        startAngle={-90}
+        rotationAngle={180}
+        itemSize={2}
+        radius={5}>
+        <CircleMenuItem
+          tooltip="Mountain"
+          tooltipPlacement={TooltipPlacement.Right}
+          onClick={()=>{handleSetTheme("Mountain")}}
+        >
+          <FaMountain/>
+        </CircleMenuItem>
+        <CircleMenuItem
+          tooltip="SunSet"
+          onClick={()=>{handleSetTheme("SunSet")}}>
+          <BsSunsetFill/>
+        </CircleMenuItem>
+        <CircleMenuItem
+          tooltip="Night"
+          onClick={()=>{handleSetTheme("Night")}}>
+          <FaMoon/>
+        </CircleMenuItem>
+        <CircleMenuItem
+          tooltip="Default"
+          onClick={()=>{handleSetTheme("Default")}}
+          >
+            <FaHome/>
+        </CircleMenuItem>
+      </MainCircleTheme>
       {/* <button onClick={toggleLeftDrawer}>테스트</button> */}
       <LeftDrawer
         className="left-drawer"
@@ -212,6 +252,7 @@ const MainPage = () => {
 
       <MainPageWrapper
         ref={outModal}
+        themeValue={themeValue}
         onClick={(e) => {
           if (outModal.current === e.target) {
             setIsActiveQuestion(false);
@@ -225,7 +266,7 @@ const MainPage = () => {
           onClick={toggleLeftDrawer}
         />
         <TimerTodoWrapper>
-          <MainTimer openModal={handleActiveQuestion} nickname={displayName} />
+          <MainTimer openModal={handleActiveQuestion} nickname={authData.displayName} />
         </TimerTodoWrapper>
 
         <MainDropLeft
@@ -233,7 +274,6 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
-      {/* <Mocktest /> */}
     </Main>
   );
 
@@ -283,6 +323,5 @@ const MainPage = () => {
       </>
     );
   }
-};
-
+}
 export default MainPage;

@@ -11,13 +11,18 @@ export default function SignInPage() {
   }
 
   return (
-    <AuthContainer>
-      <AuthLogo>
-        <img src="images/wizardCat.png" alt="위자드캣 logo" />
-        <h1>Cat`cher</h1>
-      </AuthLogo>
-      <SignIn />
-    </AuthContainer>
+    <>
+      <head>
+        <title>{`Time Cat'cher : 로그인`}</title>
+      </head>
+      <AuthContainer>
+        <AuthLogo>
+          <img src="images/wizardCat.png" alt="위자드캣 logo" />
+          <h1>Cat`cher</h1>
+        </AuthLogo>
+        <SignIn />
+      </AuthContainer>
+    </>
   );
 }
 
