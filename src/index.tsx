@@ -5,7 +5,7 @@ import Router from "./Router";
 import { Notifications } from "react-push-notification";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/theme";
-import { useRecoilState } from "recoil";
+import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 import { darkModeState } from "./pages/preference/atoms";
 
 const root = ReactDOM.createRoot(
@@ -15,10 +15,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Notifications />
+    <RecoilRoot>
     {/* <ThemeProvider theme={darkMode ? darkTheme : lightTheme}> */}
-    <ThemeProvider theme={darkTheme}>
+    {/* <ThemeProvider theme={useRecoilValue(darkModeState) ? darkTheme : lightTheme}> */}
       <Router />
-    </ThemeProvider>
+      </RecoilRoot>
+    {/* </ThemeProvider> */}
   </React.StrictMode>
 );
 

@@ -93,6 +93,7 @@ const Preference = ({ onClose }: PreferenceProps) => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
 
+
   const [helpModalState, setHelpModalState] = useState(false);
 
   const handleChangeHelpModalState = () => {
