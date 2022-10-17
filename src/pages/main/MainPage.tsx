@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  activeTodoSelector,
   activeTodoState,
   sessionAndBreakState,
   timerDataState,
@@ -37,7 +36,7 @@ import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
 import { firestore } from "../../firebaseConfig";
-import { collection, doc, setDoc, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 import { authState } from "../../atoms/atoms";
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
@@ -219,7 +218,7 @@ const MainPage = () => {
           onClick={toggleLeftDrawer}
         />
         <TimerTodoWrapper>
-          <MainTimer openModal={handleActiveQuestion} />
+          <MainTimer openModal={handleActiveQuestion} nickname={authData.displayName}/>
         </TimerTodoWrapper>
 
         <MainDropLeft
