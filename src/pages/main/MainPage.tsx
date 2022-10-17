@@ -81,12 +81,16 @@ const MainPage = () => {
   const handleSetTheme = (themeValue:string) => {
     setThemeValue(themeValue);
   }
-  //* 파이어 베이스에서 로그인 시  데이터 요청
+  /* 파이어 베이스에서 로그인 시  데이터 요청
   useEffect(() => {
     async function loadTodos() {
       const q = query(collection(firestore, authData.uid));
       const querySnapshot = await getDocs(q);
 
+    async function loadTodos() {
+      const q = query(collection(firestore, uid));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
       if (querySnapshot) {
         const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
           id: doc.data().id,
@@ -94,14 +98,18 @@ const MainPage = () => {
           min: doc.data().min,
           sec: doc.data().sec,
         }));
+        console.log(11111111111111);
         setTodolist(todosInFirestore);
       }
     }
-
-    if (authData.uid) {
+    if (uid) {
       loadTodos();
     }
-  }, [setTodolist]);
+  }, [authState]);
+
+  * 정보
+*/
+  //*---------------------------------------------------------------------
 
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({
@@ -258,7 +266,7 @@ const MainPage = () => {
           onClick={toggleLeftDrawer}
         />
         <TimerTodoWrapper>
-          <MainTimer openModal={handleActiveQuestion} nickname={authData.displayName}/>
+          <MainTimer openModal={handleActiveQuestion} nickname={authData.displayName} />
         </TimerTodoWrapper>
 
         <MainDropLeft
@@ -266,7 +274,6 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
-      {/* <Mocktest /> */}
     </Main>
   );
 
@@ -316,8 +323,5 @@ const MainPage = () => {
       </>
     );
   }
-};
-
+}
 export default MainPage;
-
-
