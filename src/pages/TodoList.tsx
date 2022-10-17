@@ -7,6 +7,7 @@ import Todo from "./Todo";
 import Modal from "../components/Modal";
 import Retrospect from "./retrospect/retrospect";
 import { strictModeState } from "./preference/atoms";
+import { retroModal } from "../atoms/atoms";
 
 const GlobalContainer = styled.div`
   width: 100%;
@@ -63,7 +64,8 @@ export default function TodoList() {
     setCheckCount((prevCount) => prevCount + 1);
   };
 
-  const [retrospectModalState, setRetrospectModalState] = useState(false);
+  const [retrospectModalState, setRetrospectModalState] =
+    useRecoilState(retroModal);
 
   const handleChangeRetroModalState = () => {
     setRetrospectModalState(!retrospectModalState);
@@ -77,7 +79,13 @@ export default function TodoList() {
         <CreateTodo />
         {todos.length
           ? todos.map((toDo) => (
-              <Todo key={toDo.id} text={toDo.text} id={toDo.id}min= {toDo.min} sec={toDo.sec}/>
+              <Todo
+                key={toDo.id}
+                text={toDo.text}
+                id={toDo.id}
+                min={toDo.min}
+                sec={toDo.sec}
+              />
             ))
           : null}
         <RecordBtn

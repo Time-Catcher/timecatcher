@@ -91,3 +91,8 @@ export const authState = atom<Auth>({
   key: "auth-state",
   default: { uid: "", email: "", displayName: "" } as Auth,
 });
+
+export const retroModal = atom({
+  key: "show-atom",
+  default: false,
+});

@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteField,
   deleteDoc,
+  DocumentReference,
 } from "firebase/firestore";
 import { firestore } from "../firebaseConfig";
 import { ITodo } from "../pages/atoms";
@@ -57,7 +58,6 @@ const useFireReq = () => {
   };
 
   //* 투두 수정코드
-
   const editTodoFireBase = async (todo: ITodo) => {
     try {
       const newTodoRef = doc(firestore, uid, todo.id);
@@ -69,7 +69,6 @@ const useFireReq = () => {
   };
 
   //* 투두 삭제코드
-
   const removeTodoFireBase = async (id: any) => {
     try {
       console.log(firestore, "-------------", uid, "-------------", id);
@@ -79,7 +78,43 @@ const useFireReq = () => {
     }
   };
 
-  return { addTodoFireBase, editTodoFireBase, removeTodoFireBase };
+  //* 투두리스트 컬렉션 전체 삭제코드
+  const removeTodoListFireBase = async () => {
+    try {
+      const q = query(collection(firestore, uid));
+      const querySnapshot = await getDocs(q);
+      for (const document of querySnapshot.docs) {
+        await deleteDoc(doc(firestore, uid, document.data().id));
+        console.log("지워짐");
+      }
+    } catch (error) {
+      alert(`An error occurred: ${error}`);
+    }
+  };
+
+  //* 회고 추가코드
+  const addRetrospectFireBase = async (retrospect: {
+    goodPoint: string;
+    badPoint: string;
+    curSelectedStarIndex: number;
+    date: Date;
+  }) => {
+    try {
+      const newTodoRef = doc(collection(firestore, `retrospect${uid}`));
+      console.log("성공?");
+      await setDoc(newTodoRef, retrospect);
+    } catch (error) {
+      alert(`An error occurred: ${error}`);
+    }
+  };
+
+  return {
+    addTodoFireBase,
+    editTodoFireBase,
+    removeTodoFireBase,
+    removeTodoListFireBase,
+    addRetrospectFireBase,
+  };
 };
 
 export default useFireReq;
