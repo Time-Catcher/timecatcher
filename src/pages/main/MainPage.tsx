@@ -35,9 +35,6 @@ import { ITodo, todoState } from "../atoms";
 import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
-import { firestore } from "../../firebaseConfig";
-import { collection, query, getDocs } from "firebase/firestore";
-import { authState } from "../../atoms/atoms";
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
 // import MainTimer from '../../components/main/MainTimer';
@@ -59,7 +56,8 @@ const MainPage = () => {
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
-
+  const userData = sessionStorage.getItem(_session_key) || "{}";
+  const { displayName } = JSON.parse(userData);
   // //* 로그인 시 세션에 담긴 유저 정보 담기;
   // const [authData, setAuthData] = useRecoilState(authState);
   // useEffect(() => {
@@ -227,7 +225,7 @@ const MainPage = () => {
           onClick={toggleLeftDrawer}
         />
         <TimerTodoWrapper>
-          <MainTimer openModal={handleActiveQuestion} nickname={authData.displayName}/>
+          <MainTimer openModal={handleActiveQuestion} nickname={displayName} />
         </TimerTodoWrapper>
 
         <MainDropLeft
