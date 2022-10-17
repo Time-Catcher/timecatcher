@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router";
+import { authState } from "../../atoms/atoms";
 import { strictModeState } from "../preference/atoms";
+import useFireReq from "../../hooks/useFireReq";
 import {
   MiddleContainer,
   RetroContainer,
@@ -20,12 +23,14 @@ let dbTimer: NodeJS.Timeout;
 
 const Retrospect = ({ handleExit }: { handleExit: () => void }) => {
   const strictMode = useRecoilValue(strictModeState);
-
+  const navigate = useNavigate();
   const [curSelectedStarIndex, setCurSelectedStarIndex] = useState<number>(2);
 
   const [goodPoint, setGoodPoint] = useState<string>("");
 
   const [badPoint, setBadPoint] = useState<string>("");
+
+  const { removeTodoListFireBase, addRetrospectFireBase } = useFireReq();
 
   const handleChangeText = (
     value: string,
@@ -40,8 +45,21 @@ const Retrospect = ({ handleExit }: { handleExit: () => void }) => {
     }, 100);
   };
 
-  const handleSubmitRetrospect = () => {
+  const handleSubmitRetrospect = async () => {
     // 회고록 제출
+    // firestore 컬렉션 문서들이 삭제. (해당 id의 컬렉션 전체 삭제)
+    await removeTodoListFireBase();
+
+    // firestroe에 회고록 데이터 추가. (회고록 데이터가 들어갈 내용들은..? todo도 넣을까??)
+    addRetrospectFireBase({
+      goodPoint: goodPoint,
+      badPoint: badPoint,
+      curSelectedStarIndex: curSelectedStarIndex,
+      date: new Date(),
+    });
+
+    // 새로고침
+    location.reload();
   };
 
   return (
