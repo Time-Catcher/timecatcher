@@ -189,6 +189,9 @@ const MainPage = () => {
 
   return (
     <Main>
+      <head>
+        <title>{`Time Cat'cher : 뽀모도로`}</title>
+      </head>
       {/* <button onClick={toggleLeftDrawer}>테스트</button> */}
       <LeftDrawer
         className="left-drawer"
