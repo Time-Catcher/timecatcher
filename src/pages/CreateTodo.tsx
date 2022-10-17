@@ -14,11 +14,13 @@ const Form = styled.form`
   align-items: center;
   padding: 8px;
   margin-bottom: 15px;
-  width: 405px;
+  margin-left: -16px;
+  width: 366px;
   height: 64px;
   gap: 10px;
   box-sizing: border-box;
-  background-color: "#fffbff";
+  background-color: ${(props) => props.theme.inputBox};
+  // background-color: #79767a;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 `;
@@ -43,18 +45,29 @@ const Input = styled.input`
   border: none;
   padding: 8px;
   gap: 4px;
-  background: #fffbff;
+  // background: #fffbff;
+  background-color: ${(props) => props.theme.inputBox};
+  color: ${(props) => props.theme.textColor};
   width: 365px;
   height: 34px;
   border-radius: 15px;
   box-sizing: border-box;
+  &::placeholder {
+    color: ${(props) => props.theme.textColor};
+  }
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: ${(props) => props.theme.textColor};
+  }
 `;
 
 export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const setTodo = useSetRecoilState(todoState);
-  const [할일, 셋함수] = useRecoilState(todoState);
-  console.log(할일);
+
   const handleTodo = ({ todo }: IForm) => {
     setTodo((preTodo) => [{ text: todo, id: Date.now() }, ...preTodo]);
     setValue("todo", "");

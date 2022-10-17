@@ -9,10 +9,13 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
+    "@types/react-custom-scrollbars": "^4.0.10",
     "@types/react-dom": "^18.0.0",
     "@types/styled-components": "^5.1.26",
     "firebase": "^9.12.1",
+    "howler": "^2.2.3",
     "react": "^18.2.0",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
     "react-modern-drawer": "1.1.2",
@@ -52,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/howler": "^2.2.7",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",

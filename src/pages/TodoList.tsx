@@ -25,12 +25,36 @@ const TodoBody = styled.div`
   align-items: center;
   padding: 50px 16px 16px 16px;
   gap: 16px;
-  background: #fffbff;
-  border-radius: 15px 15px 0px 0px;
+  //#575657
+  //background: #fffbff;
+  background-color: ${(props) => props.theme.bgColor};
+
   box-sizing: border-box;
 `;
 
+const TodoBox = styled.div`
+  padding-right: 10px;
+  overflow: scroll;
+  height: 70%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 13px;
+    height: 8px;
+    border-radius: 6px;
+    background: rgb(160, 160, 160, 025);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: #8070d4;
+    border: 3px solid rgba(0, 0, 0, 0.2);
+  }
+  border-radius: 16px;
+`;
+
 const RecordBtn = styled.button`
+  position: fixed;
+  bottom: 16px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -39,10 +63,12 @@ const RecordBtn = styled.button`
   gap: 10px;
   width: 405px;
   height: 64px;
-  background: #6750a4;
   border: none;
+  // background: #6750a4;
+  // color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  color: white;
+  color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.inputBox};
   &:disabled {
     background-color: #ccc;
     color: #999999;
@@ -65,11 +91,15 @@ export default function TodoList() {
       </GlobalContainer> */}
       <TodoBody>
         <CreateTodo />
-        {todos.length
-          ? todos.map((toDo) => (
-              <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
-            ))
-          : null}
+
+        <TodoBox>
+          {todos.length
+            ? todos.map((toDo) => (
+                <Todo key={toDo.id} text={toDo.text} id={toDo.id} />
+              ))
+            : null}
+        </TodoBox>
+
         <RecordBtn
           disabled={!(completedCount === todos.length && todos.length > 0)}
         >

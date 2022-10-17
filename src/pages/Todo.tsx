@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { completedTodoCount, ITodo, todoState } from "./atoms";
@@ -26,13 +25,14 @@ const TodoItem = styled.div<IsChecked>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow-wrap: break-word;
   padding: 8px;
   margin-bottom: 15px;
-  width: 389px;
+  width: 350px;
   min-height: 64px;
-  color: ${(props) => (props.isChecked ? "grey" : "#280866")};
+  color: ${(props) => (props.isChecked ? "grey" : props.theme.textColor)};
   background-color: ${(props) =>
-    props.isChecked ? "rgba(153, 121, 173,0.5)" : "rgba(122, 54, 212, 0.5)"};
+    props.isChecked ? "rgba(153, 121, 173,0.5)" : props.theme.todoItem};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 `;

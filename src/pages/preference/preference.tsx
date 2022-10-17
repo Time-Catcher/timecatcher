@@ -1,12 +1,14 @@
-import { useRecoilState } from "recoil";
-import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
 import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
+import VolumeBar from "../../components/VolumeBar";
+import { volumeState } from "./atoms";
 import {
   darkModeState,
   // restTimeState,
   strictModeState,
-  whiteNoiseState,
+  whiteNoiseState
 } from "./atoms";
 import {
   Background,
@@ -20,29 +22,60 @@ import {
   PrefContainer,
   RowLine,
   Title,
-  ModeWrapper,
+  ModeWrapper
 } from "./style";
 
 import Modal from "../../components/Modal";
 import Retrospect from "../retrospect/retrospect";
 import { sessionAndBreakState } from "../../atoms/atoms";
+import { Howl, Howler } from "howler";
 
-
-interface PreferenceProps{
-  onClose:()=>void
+interface PreferenceProps {
+  onClose: () => void;
+}
+interface ObjType {
+  [key: string]: Howl;
 }
 
-const Preference = ({onClose}:PreferenceProps) => {
+const Preference = ({ onClose }: PreferenceProps) => {
   const [, setSessionAndBreakTime] = useRecoilState(sessionAndBreakState);
   const handleChangeRestTimeSet = (value: string) => {
-     const [ session,breakTime ]= value.split("-").map(Number)
-     setSessionAndBreakTime({ session,breakTime });
-
+    const [session, breakTime] = value.split("-").map(Number);
+    setSessionAndBreakTime({ session, breakTime });
   };
-
+  const volume = useRecoilValue(volumeState);
+  // console.log(volume);
+  Howler.volume(volume);
   const [, setWhiteNoiseSet] = useRecoilState(whiteNoiseState);
   const handleChangeWhiteNoiseSet = (value: string) => {
     setWhiteNoiseSet({ whiteNoiseSet: value });
+    const fire = new Howl({
+      src: ["audio/fire.wav"],
+      volume: 1,
+      loop: true
+    });
+    const bird = new Howl({
+      src: ["audio/bird.wav"],
+      volume: 1,
+      loop: true
+    });
+
+    if (value === "소리 없음") {
+      Howler.stop();
+    } else if (value === "장작 타는 소리") {
+      // console.log("장작이야");
+      Howler.stop();
+      fire.play();
+    } else if (value === "숲 속의 새 소리") {
+      // console.log("새 소리야");
+      Howler.stop();
+      bird.play();
+    }
+    // const noiseList: ObjType = {
+    //   "장작 타는 소리": fire,
+    //   "숲 속의 새 소리": bird
+    // };
+    // noiseList[value].play();
   };
 
   const [strictMode, setStrictMode] = useRecoilState(strictModeState);
@@ -55,6 +88,7 @@ const Preference = ({onClose}:PreferenceProps) => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
   const [helpModalState, setHelpModalState] = useState(false);
+
   return (
     <Background>
       <PrefContainer>
@@ -95,10 +129,10 @@ const Preference = ({onClose}:PreferenceProps) => {
           <OptionTitle>화이트노이즈 설정</OptionTitle>
           <DropDown
             width={120}
-            list={["장작 타는 소리", "숲 속의 새 소리"]}
+            list={["소리 없음", "장작 타는 소리", "숲 속의 새 소리"]}
             onChange={handleChangeWhiteNoiseSet}
           ></DropDown>
-
+          <VolumeBar></VolumeBar>
           <LogoutButton type="button">로그아웃</LogoutButton>
         </OptionContainer>
       </PrefContainer>
