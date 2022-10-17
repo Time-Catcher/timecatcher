@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
     // "baseUrl": "./src",
     // "paths": {
     //   "@components/*": ["./components/*"],
@@ -22,6 +22,10 @@
     //   "@atoms/*": ["./atoms/*"],
     //   "@hooks/*": ["./hooks/*"]
     // }
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "declaration": true,
+    "declarationDir": "./types"
   },
+  "typeRoots": ["./types", "./node_modules/@types"],
   "include": ["src"]
 }

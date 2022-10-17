@@ -1,8 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { activeTodoSelector } from "../../atoms/atoms";
-import { ITodo } from "../../pages/atoms";
 import { TodoDivide, TodoNotification, HowMaySpendTime, OnMainTodoWrapper, WhatTodoNow, WhatTodoWrapper, TodoNotiTitle, TodoNotiImg } from "../../pages/main/MainStyle";
 import { fillZeroFromStart } from "../../util/fillZero";
 
