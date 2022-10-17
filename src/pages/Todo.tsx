@@ -162,7 +162,6 @@ export default function Todo({ text, id, min, sec }: ITodo) {
   };
 
   const handleEdit = () => {
-    console.log(editInputRef);
     const newText = editInputRef.current?.value;
     const newTodo: ITodo = {
       id,
