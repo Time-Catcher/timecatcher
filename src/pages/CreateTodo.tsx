@@ -16,11 +16,20 @@ const Form = styled.form`
   margin-bottom: 15px;
   width: 405px;
   height: 64px;
+
   gap: 10px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
   box-sizing: border-box;
   background-color: "#fffbff";
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
 `;
 
 const AddBtn = styled.button`
@@ -28,8 +37,6 @@ const AddBtn = styled.button`
   width: 16px;
   height: 16px;
   background: url(${ImgSrc}) center;
-  background-size: cover;
-  margin-left: 8px;
   &:hover {
     cursor: pointer;
   }
@@ -46,7 +53,11 @@ const Input = styled.input`
   background: #fffbff;
   width: 365px;
   height: 34px;
+
   border-radius: 15px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
   box-sizing: border-box;
 `;
 
@@ -54,9 +65,9 @@ export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const setTodo = useSetRecoilState(todoState);
   const [할일, 셋함수] = useRecoilState(todoState);
-  console.log(할일);
+  // console.log(할일);
   const handleTodo = ({ todo }: IForm) => {
-    setTodo((preTodo) => [{ text: todo, id: Date.now() }, ...preTodo]);
+    setTodo((preTodo) => [{ text: todo, id: Date.now() ,min:0, sec:0}, ...preTodo]);
     setValue("todo", "");
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
@@ -67,7 +78,7 @@ export default function CreateTodo() {
         <Input
           placeholder="할일에 작업 추가하기"
           {...register("todo", {
-            required: "빈칸입니다! 할 일을 채워주세요!"
+            required: "빈칸입니다! 할 일을 채워주세요!",
           })}
         />
       </Form>

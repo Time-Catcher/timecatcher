@@ -1,17 +1,17 @@
-
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import { useState, useEffect, useRef } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
+  activeTodoSelector,
+  activeTodoState,
   sessionAndBreakState,
   timerDataState,
   timerFunctionState,
   timerModeState,
 } from "../../atoms/atoms";
 import MainTimer from "../../components/main/MainTimer";
-import MainTodoList from "../../components/main/MainTodoList";
 import { minutesToDate } from "../../util/minutesToDate";
 import {
   BBoMoDesc,
@@ -31,8 +31,14 @@ import addNotification from "react-push-notification";
 import Preference from "../preference/preference";
 import { LeftDrawer } from "./MainStyle";
 import TodoList from "../TodoList";
+import Todo from "../Todo";
+import { ITodo, todoState } from "../atoms";
+import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
+import { firestore } from "../../firebaseConfig";
+import { collection, doc, setDoc, query, getDocs } from "firebase/firestore";
+import { authState } from "../../atoms/atoms";
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
 // import MainTimer from '../../components/main/MainTimer';
@@ -44,7 +50,8 @@ const MainPage = () => {
   if (!sessionStorage.getItem(_session_key)) {
     return <Navigate to="/" />;
   }
-
+  const activeId = useRecoilValue(activeTodoState);
+  const [todoList, setTodolist] = useRecoilState(todoState);
 
   const [leftDrawerOpen, setLeftDrawerOpen] = useState(false);
   const [rightDrawerOpen, setRightDrawerOpen] = useState(false);
@@ -53,6 +60,40 @@ const MainPage = () => {
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
+
+  //* 로그인 시 세션에 담긴 유저 정보 담기;
+  const [authData, setAuthData] = useRecoilState(authState);
+  useEffect(() => {
+    const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+    const userData = sessionStorage.getItem(_session_key);
+    if (userData) {
+      const { uid, email, displayName } = JSON.parse(userData).providerData[0];
+      setAuthData({ uid, email, displayName });
+    }
+  }, []);
+
+  //* 파이어 베이스에서 로그인 시  데이터 요청
+  useEffect(() => {
+    async function loadTodos() {
+      const q = query(collection(firestore, authData.uid));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot) {
+        const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
+          id: doc.data().id,
+          text: doc.data().text,
+          min: doc.data().min,
+          sec: doc.data().sec,
+        }));
+        setTodolist(todosInFirestore);
+      }
+    }
+
+    if (authData.uid) {
+      loadTodos();
+    }
+  }, [setTodolist]);
+
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({
       expiryTimestamp: minutesToDate(sessionAndBreak[timerMode]),
@@ -77,19 +118,35 @@ const MainPage = () => {
         }
       },
     });
+
   useEffect(() => {
     restart(minutesToDate(sessionAndBreak[timerMode]), false);
   }, [timerMode, sessionAndBreak]);
+
   useEffect(() => {
     setTimerData({ seconds, minutes, isRunning });
     setTimerFunction({ start, pause, restart, resume });
   }, [seconds, minutes, isRunning, start, pause, restart, resume]);
 
-  const [isActiveQuestion, setIsActiveQuestion] = useState(false);
+  useEffect(() => {
+    if (isRunning && activeId.id) {
+      //포커스되고 있는 투두 아이디의 second값을 +1;
 
-  const handleActiveQuestion = () => {
-      setIsActiveQuestion(true);
-  }
+      setTodolist((prev) =>
+        prev.map((todo) =>
+          todo.id === activeId.id
+            ? {
+                ...todo,
+                min: todo.sec === 59 ? todo.min + 1 : todo.min,
+                sec: todo.sec === 59 ? 0 : todo.sec + 1,
+              }
+            : todo
+        )
+      );
+    }
+  }, [isRunning, activeId.id, seconds]);
+
+  const [isActiveQuestion, setIsActiveQuestion] = useState(false);
 
   const handleActiveQuestion = () => {
     setIsActiveQuestion(true);
@@ -98,7 +155,7 @@ const MainPage = () => {
   const closeActiveQuestion = () => {
     setIsActiveQuestion(false);
   };
-
+  const activeTodoId = useRecoilValue(activeTodoState);
   const outModal = useRef<any>();
   const audioPlayer = useRef<any>(null);
 
@@ -145,7 +202,7 @@ const MainPage = () => {
       >
         <TodoList />
       </Drawer>
-      <audio ref={audioPlayer} src="notification-sound.mp3" />
+      <audio ref={audioPlayer} src="meow.wav" />
 
       <MainPageWrapper
         ref={outModal}
@@ -155,6 +212,7 @@ const MainPage = () => {
           }
         }}
       >
+        <OnMainTodo />
         <InfoModal />
         <MainDropRight
           src="images/dropUpButton.png"
@@ -162,7 +220,6 @@ const MainPage = () => {
         />
         <TimerTodoWrapper>
           <MainTimer openModal={handleActiveQuestion} />
-          <MainTodoList />
         </TimerTodoWrapper>
 
         <MainDropLeft

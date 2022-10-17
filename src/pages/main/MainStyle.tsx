@@ -35,7 +35,8 @@ export const MainPageWrapper = styled.div`
       }
 `
 export const TimerTodoWrapper = styled.div`
-    display:flex;  
+    display:flex; 
+    align-items: center; 
     flex-direction:column;
 `
 export const MainTimerWrapper = styled.div`
@@ -84,10 +85,16 @@ export const MainBBomodoro = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
-    font-size: 32px;
+    margin: 20px;
+    font-size: 40px;
     color: #ffffff;
-    background-image: url(${backgroundImg});
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+
     `
 
 export const MainTimerButton = styled.div`
@@ -124,6 +131,7 @@ export const MainDropLeft = styled.img`
     height: 64px;
     cursor: pointer;
     transform:rotate(0.25turn);
+
 
 `
 
@@ -188,9 +196,61 @@ export const LeftDrawer = styled(Drawer)`
     font-size:0;
 `
 
+export const TodoNotification = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 
-export const MainTodoListWrapper = styled.div``
+`
 
-export const TodoListNotification = styled.p``
+export const WhatTodoWrapper = styled.div`
+    width: 100%;
+    display:flex;
+    justify-content: space-around;
+`
 
-export const TodoListOne = styled.div``
+export const OnMainTodoWrapper = styled.div`
+  position: fixed;
+  width: 500px;
+  top:20%;
+  left: 50%;
+  padding: 10px;
+  transform: translate(-50%,-50%);
+  background: #fffbff;
+  border-radius: 16px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  color: "#1C1B1E";
+  border: 10px solid #c700ff;
+  text-align:center;
+`;
+export const TodoDivide = styled.hr`
+    width: 80%;
+    border: solid 5px #c700ff;
+`
+export const WhatTodoNow = styled.span`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  animation: textLoop 2s linear infinite;
+  @keyframes textLoop {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+`;
+export const HowMaySpendTime = styled.span`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+
+`;
