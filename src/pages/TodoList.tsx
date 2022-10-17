@@ -17,12 +17,9 @@ const GlobalContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const TodoBody = styled.div`
   display: flex;
   height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -32,7 +29,6 @@ const TodoBody = styled.div`
   border-radius: 15px 15px 0px 0px;
   box-sizing: border-box;
 `;
-
 const RecordBtn = styled.button`
   display: flex;
   flex-direction: row;
@@ -50,6 +46,11 @@ const RecordBtn = styled.button`
     background-color: #ccc;
     color: #999999;
   }
+`;
+
+const TodoScroll = styled.div`
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 type ICount = number;
@@ -75,11 +76,19 @@ export default function TodoList() {
       </GlobalContainer> */}
       <TodoBody>
         <CreateTodo />
-        {todos.length
-          ? todos.map((toDo) => (
-              <Todo key={toDo.id} text={toDo.text} id={toDo.id}min= {toDo.min} sec={toDo.sec}/>
-            ))
-          : null}
+        <TodoScroll>
+          {todos.length
+            ? todos.map((toDo) => (
+                <Todo
+                  key={toDo.id}
+                  text={toDo.text}
+                  id={toDo.id}
+                  min={toDo.min}
+                  sec={toDo.sec}
+                />
+              ))
+            : null}
+        </TodoScroll>
         <RecordBtn
           disabled={!(completedCount === todos.length && todos.length > 0)}
           onClick={handleChangeRetroModalState}

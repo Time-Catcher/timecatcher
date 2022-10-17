@@ -19,20 +19,11 @@ const Form = styled.form`
   margin-bottom: 15px;
   width: 405px;
   height: 64px;
-
   gap: 10px;
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
   box-sizing: border-box;
   background-color: "#fffbff";
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const AddBtn = styled.button`
@@ -40,11 +31,12 @@ const AddBtn = styled.button`
   width: 16px;
   height: 16px;
   background: url(${ImgSrc}) center;
+  background-size: cover;
+  margin-left: 8px;
   &:hover {
     cursor: pointer;
   }
 `;
-
 const Input = styled.input`
   display: flex;
   flex-direction: column;
@@ -56,12 +48,7 @@ const Input = styled.input`
   background: #fffbff;
   width: 365px;
   height: 34px;
-
   border-radius: 15px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  box-sizing: border-box;
 `;
 
 export default function CreateTodo() {
