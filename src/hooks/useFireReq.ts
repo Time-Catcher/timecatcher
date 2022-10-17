@@ -27,7 +27,6 @@ const useFireReq = () => {
     async function loadTodos() {
       const q = query(collection(firestore, uid));
       const querySnapshot = await getDocs(q);
-      console.log(querySnapshot);
       if (querySnapshot) {
         const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
           id: doc.data().id,
@@ -60,8 +59,6 @@ const useFireReq = () => {
   //* 투두 수정코드
 
   const editTodoFireBase = async (todo: ITodo) => {
-    console.log(todo);
-
     try {
       const newTodoRef = doc(firestore, uid, todo.id);
 
