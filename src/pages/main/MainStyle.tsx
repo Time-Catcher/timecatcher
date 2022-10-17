@@ -1,38 +1,61 @@
 import styled from "styled-components";
 import Drawer from 'react-modern-drawer';
+import { CircleMenu } from "react-circular-menu";
+
+
+interface MainPageWrapperProps {
+    themeValue: string;
+    // props: string;
+  }
 
 export const Main = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
 `
+export const MainPageWrapper = styled.div<MainPageWrapperProps>`
+width: 100%;
+height: 100vh;
+background-color: #4158D0;
+background-image: ${(props) => {
+if(props.themeValue ==="SunSet"){
+  return 'linear-gradient( 68.3deg,  rgba(245,177,97,1) 0.4%, rgba(236,54,110,1) 100.2% )'
+} else if(props.themeValue === "Night"){
+  return 'linear-gradient( 112.1deg,  rgba(32,38,57,1) 11.4%, rgba(63,76,119,1) 70.2% );'
+} else if(props.themeValue === "Mountain") {
+  return 'radial-gradient( circle farthest-corner at 10% 20%,  rgba(14,174,87,1) 0%, rgba(12,116,117,1) 90% )'
+} else if(props.themeValue==="Default"){
+    return "linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);"   
+}
+}};
+background-repeat: no-repeat;
+background-size: 400% 400%;
+animation: backgroundChange 20s ease-in-out infinite;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+position: relative;
 
-export const MainPageWrapper = styled.div`
-    width: 100%;
-    height: 100vh;
-    background-color: #4158D0;
-    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-    background-repeat: no-repeat;
-    background-size: 400% 400%;
-    animation: backgroundChange 20s ease-in-out infinite;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-
-    @keyframes backgroundChange {
-        0% {
-          background-position: 0 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0 50%;
-        }
-      }
+@keyframes backgroundChange {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
 `
+
+export const MainCircleTheme = styled(CircleMenu)`
+    position: fixed;
+    right: 10%;
+    top: 10%;
+`
+
 export const TimerTodoWrapper = styled.div`
     display:flex; 
     align-items: center; 
