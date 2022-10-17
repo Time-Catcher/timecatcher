@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import MainPage from "./pages/main/MainPage";
+import Page404 from "./pages/Page404";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import TodoList from "./pages/TodoList";
@@ -17,7 +18,8 @@ const Router = () => {
           <Route path="/" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/main" element={<MainPage />} />
-          <Route path="/todo" element={<TodoList />} />
+          <Route path="/*" element={<Page404 />} />
+        
         </Routes>
       </RecoilRoot>
     </BrowserRouter>
@@ -25,3 +27,4 @@ const Router = () => {
 };
 
 export default Router;
+

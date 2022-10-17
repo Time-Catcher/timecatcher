@@ -1,10 +1,23 @@
-import React, { useState, useRef } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { completedTodoCount, ITodo, todoState } from "./atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  /*activeTodoSpendTimeState,*/ completedTodoCount,
+  ITodo,
+  todoState,
+} from "./atoms";
 import PomoCount from "./img/Pomocounter.png";
 import Dots from "./img/Dot.png";
 import Chk from "./img/checkbox.png";
+import {
+  activeTodoSelector,
+  activeTodoState,
+  timerDataState,
+} from "../atoms/atoms";
+import useFireReq from "../hooks/useFireReq";
 
 const TodoContainer = styled.div`
   display: flex;
@@ -18,7 +31,6 @@ const TodoContainer = styled.div`
   background: #fffbff;
   border-radius: 15px;
 `;
-
 const TodoItem = styled.div<IsChecked>`
   text-decoration: ${(props) => (props.isChecked ? "line-through" : null)};
   position: relative;
@@ -30,7 +42,12 @@ const TodoItem = styled.div<IsChecked>`
   margin-bottom: 15px;
   width: 350px;
   min-height: 64px;
+
   color: ${(props) => (props.isChecked ? "grey" : props.theme.textColor)};
+
+  word-break: break-all;
+  color: ${(props) => (props.isChecked ? "grey" : "#280866")};
+
   background-color: ${(props) =>
     props.isChecked ? "rgba(153, 121, 173,0.5)" : props.theme.todoItem};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
@@ -54,7 +71,6 @@ const PomoCounter = styled.div`
   height: 18px;
   background: url(${PomoCount}) center;
 `;
-
 const EditBtn = styled.button`
   position: absolute;
   right: 10px;
@@ -66,7 +82,6 @@ const EditBtn = styled.button`
     cursor: pointer;
   }
 `;
-
 const EditGroup = styled.div`
   position: absolute;
   display: flex;
@@ -82,9 +97,7 @@ const EditGroup = styled.div`
     justify-content: center;
     align-items: center;
     padding: 12px 8px;
-
     gap: 10px;
-
     position: relative;
     width: 60px;
     height: 20px;
@@ -95,14 +108,12 @@ const EditGroup = styled.div`
     outline: none;
   }
 `;
-
 const TodoSpan = styled.span`
   display: inline-block;
   width: 75%;
   padding: 20px;
   overflow: visible;
 `;
-
 const EditTodo = styled.div`
   margin-left: 20px;
   & input {
@@ -114,7 +125,6 @@ const EditTodo = styled.div`
     font-size: 14px;
   }
 `;
-
 const CheckInput = styled.input`
   width: 20px;
   height: 20px;
@@ -127,20 +137,39 @@ interface IsChecked {
 
 type Count = (test: number) => void;
 
-export default function Todo({ text, id }: ITodo) {
+export default function Todo({ text, id, min, sec }: ITodo) {
   const [editOpen, setEditOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const setCount = useSetRecoilState(completedTodoCount);
   const setTodo = useSetRecoilState(todoState);
   const [editMode, setEditMode] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
+  const { editTodoFireBase, removeTodoFireBase } = useFireReq();
+
+  const [activateTodo, setActivateTodo] = useRecoilState(activeTodoState);
+  const { seconds } = useRecoilValue(timerDataState);
+  //  const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
+
+  //  useEffect(()=>{
+  //   if(activeTodoSpendTime){
+  //     setActivateTodoSpendTime(activeTodoSpendTime+1);
+  //     console.log(activeTodoSpendTime);
+  //   }
+
+  //  },[seconds])
+  const onActivated = () => {
+    if (id === activateTodo.id) {
+      setActivateTodo({ id: undefined });
+    } else {
+      setActivateTodo({ id });
+    }
+  };
 
   const onChecked = () => {
     setIsChecked((prev) => !prev);
     setCount((prevCount) => (isChecked ? prevCount - 1 : prevCount + 1));
     setEditOpen(false);
   };
-
   const onDelete = () => {
     if (isChecked) {
       setCount((prevCount) => prevCount - 1);
@@ -150,25 +179,34 @@ export default function Todo({ text, id }: ITodo) {
       const deleteIndex = oldToDos.findIndex((toDo) => toDo.id === id);
       return [
         ...oldToDos.slice(0, deleteIndex),
-        ...oldToDos.slice(deleteIndex + 1)
+        ...oldToDos.slice(deleteIndex + 1),
       ];
     });
+    removeTodoFireBase(id);
   };
 
   const handleEdit = () => {
-    console.log(editInputRef);
     const newText = editInputRef.current?.value;
-    const newTodo = { id: Date.now(), text: newText as any };
+    const newTodo: ITodo = {
+      id,
+      text: newText as any,
+      min,
+      sec,
+    };
 
     setTodo((oldToDos) => {
       const editIndex = oldToDos.findIndex((toDo) => toDo.id === id);
       return [
         ...oldToDos.slice(0, editIndex),
         newTodo,
-        ...oldToDos.slice(editIndex + 1)
+        ...oldToDos.slice(editIndex + 1),
       ];
     });
+
+    editTodoFireBase(newTodo);
+    setEditMode(false);
   };
+
   const onEditOpen = () => {
     setEditOpen((prev) => !prev);
   };
@@ -214,7 +252,6 @@ export default function Todo({ text, id }: ITodo) {
             <PomoCounter />
           </>
         )}
-
         {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
         {!isChecked && editOpen ? (
           <EditGroup>

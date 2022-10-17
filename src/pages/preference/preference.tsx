@@ -1,9 +1,12 @@
+
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import DropDown from "../../components/DropDown";
 import SideToggleBar from "../../components/SideToggleBar";
 import VolumeBar from "../../components/VolumeBar";
 import { volumeState } from "./atoms";
+import { getAuth, signOut } from "firebase/auth";
+import StrictMode from "../../components/StrcitMode";
 import {
   darkModeState,
   // restTimeState,
@@ -24,10 +27,10 @@ import {
   Title,
   ModeWrapper
 } from "./style";
-
+import { useNavigate } from "react-router";
 import Modal from "../../components/Modal";
-import Retrospect from "../retrospect/retrospect";
 import { sessionAndBreakState } from "../../atoms/atoms";
+
 import { Howl, Howler } from "howler";
 
 interface PreferenceProps {
@@ -38,6 +41,8 @@ interface ObjType {
 }
 
 const Preference = ({ onClose }: PreferenceProps) => {
+  const navigate = useNavigate();
+
   const [, setSessionAndBreakTime] = useRecoilState(sessionAndBreakState);
   const handleChangeRestTimeSet = (value: string) => {
     const [session, breakTime] = value.split("-").map(Number);
@@ -87,7 +92,18 @@ const Preference = ({ onClose }: PreferenceProps) => {
   const handleToggleDarkMode = () => {
     setDarkMode({ darkMode: !darkMode.darkMode });
   };
+
   const [helpModalState, setHelpModalState] = useState(false);
+
+  const handleChangeHelpModalState = () => {
+    setHelpModalState(!helpModalState);
+  }
+  
+  const handleSignOutClick = () => {
+    const auth = getAuth();
+    signOut(auth);
+    navigate("/");
+  };
 
   return (
     <Background>
@@ -111,13 +127,11 @@ const Preference = ({ onClose }: PreferenceProps) => {
             <OptionTitle>엄격 기록모드 On/Off</OptionTitle>
             <HelpLabel
               src="/mode_help_label.png"
-              onClick={() => {
-                setHelpModalState(!helpModalState);
-              }}
+              onClick={handleChangeHelpModalState}
             ></HelpLabel>
 
             <Modal modalState={helpModalState}>
-              <Retrospect></Retrospect>
+              <StrictMode handleExit={handleChangeHelpModalState}></StrictMode>
             </Modal>
           </ModeWrapper>
 
@@ -132,8 +146,12 @@ const Preference = ({ onClose }: PreferenceProps) => {
             list={["소리 없음", "장작 타는 소리", "숲 속의 새 소리"]}
             onChange={handleChangeWhiteNoiseSet}
           ></DropDown>
+
           <VolumeBar></VolumeBar>
-          <LogoutButton type="button">로그아웃</LogoutButton>
+
+          <LogoutButton type="button" onClick={handleSignOutClick}>
+            로그아웃
+          </LogoutButton>
         </OptionContainer>
       </PrefContainer>
     </Background>

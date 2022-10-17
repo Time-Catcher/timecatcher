@@ -1,10 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { IForm, todoState } from "./atoms";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { IForm, todoState, ITodo } from "./atoms";
 import ImgSrc from "./img/AddImg.png";
-
+import { authState } from "../atoms/atoms";
+import { firestore } from "../firebaseConfig";
+import { collection, doc, setDoc } from "firebase/firestore";
+import useFireReq from "../hooks/useFireReq";
 //css
 
 const Form = styled.form`
@@ -36,7 +39,6 @@ const AddBtn = styled.button`
     cursor: pointer;
   }
 `;
-
 const Input = styled.input`
   display: flex;
   flex-direction: column;
@@ -62,15 +64,22 @@ const Input = styled.input`
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: ${(props) => props.theme.textColor};
   }
+
 `;
 
 export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
+
   const setTodo = useSetRecoilState(todoState);
 
+
+  const [todos, setTodos] = useRecoilState(todoState);
+  const { addTodoFireBase } = useFireReq();
+
   const handleTodo = ({ todo }: IForm) => {
-    setTodo((preTodo) => [{ text: todo, id: Date.now() }, ...preTodo]);
+    const newTodo = { text: todo, id: 0, min: 0, sec: 0 };
     setValue("todo", "");
+    addTodoFireBase(newTodo);
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
   return (
@@ -80,7 +89,7 @@ export default function CreateTodo() {
         <Input
           placeholder="할일에 작업 추가하기"
           {...register("todo", {
-            required: "빈칸입니다! 할 일을 채워주세요!"
+            required: "빈칸입니다! 할 일을 채워주세요!",
           })}
         />
       </Form>

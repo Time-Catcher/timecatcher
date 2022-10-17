@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { strictModeState } from "../preference/atoms";
 import {
   MiddleContainer,
   RetroContainer,
@@ -16,7 +18,9 @@ import {
 const starCountList: number[] = [1, 2, 3, 4, 5];
 let dbTimer: NodeJS.Timeout;
 
-const Retrospect = () => {
+const Retrospect = ({ handleExit }: { handleExit: () => void }) => {
+  const strictMode = useRecoilValue(strictModeState);
+
   const [curSelectedStarIndex, setCurSelectedStarIndex] = useState<number>(2);
 
   const [goodPoint, setGoodPoint] = useState<string>("");
@@ -44,7 +48,12 @@ const Retrospect = () => {
     <RetroContainer>
       <RetroHeader>
         <RetroTitle>오늘의 기록</RetroTitle>
-        <RetroExitButton src="/close_button.png"></RetroExitButton>
+        {!strictMode.strictMode && (
+          <RetroExitButton
+            src="/close_button.png"
+            onClick={handleExit}
+          ></RetroExitButton>
+        )}
       </RetroHeader>
       <MiddleContainer>
         <RetroTitle>좋았던 점</RetroTitle>
@@ -85,10 +94,14 @@ const Retrospect = () => {
           </SatisfyWrapper>
         </SatisfyContainer>
       </MiddleContainer>
+
       <CommonButton type="button" onClick={handleSubmitRetrospect}>
         제출하기
       </CommonButton>
-      <CommonButton type="button">다음에 작성하기</CommonButton>
+
+      {!strictMode.strictMode && (
+        <CommonButton type="button">다음에 작성하기</CommonButton>
+      )}
     </RetroContainer>
   );
 };
