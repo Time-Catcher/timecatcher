@@ -60,38 +60,47 @@ const MainPage = () => {
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
 
-  //* 로그인 시 세션에 담긴 유저 정보 담기;
-  const [authData, setAuthData] = useRecoilState(authState);
-  useEffect(() => {
-    const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
-    const userData = sessionStorage.getItem(_session_key);
-    if (userData) {
-      const { uid, email, displayName } = JSON.parse(userData).providerData[0];
-      setAuthData({ uid, email, displayName });
-    }
-  }, []);
+  // //* 로그인 시 세션에 담긴 유저 정보 담기;
+  // const [authData, setAuthData] = useRecoilState(authState);
+  // useEffect(() => {
+  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  //   const userData = sessionStorage.getItem(_session_key);
 
-  //* 파이어 베이스에서 로그인 시  데이터 요청
-  useEffect(() => {
-    async function loadTodos() {
-      const q = query(collection(firestore, authData.uid));
-      const querySnapshot = await getDocs(q);
+  //   if (userData) {
+  //     const { uid, email, displayName } = JSON.parse(userData);
+  //     setAuthData({ uid, email, displayName });
+  //   }
+  // }, []);
 
-      if (querySnapshot) {
-        const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
-          id: doc.data().id,
-          text: doc.data().text,
-          min: doc.data().min,
-          sec: doc.data().sec,
-        }));
-        setTodolist(todosInFirestore);
-      }
-    }
+  // //* 파이어 베이스에서 로그인 시  데이터 요청
+  // useEffect(() => {
+  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  //   const userData = sessionStorage.getItem(_session_key) || "{}";
+  //   const { uid } = JSON.parse(userData);
 
-    if (authData.uid) {
-      loadTodos();
-    }
-  }, [setTodolist]);
+  //   async function loadTodos() {
+  //     const q = query(collection(firestore, uid));
+  //     const querySnapshot = await getDocs(q);
+  //     console.log(querySnapshot);
+  //     if (querySnapshot) {
+  //       const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
+  //         id: doc.data().id,
+  //         text: doc.data().text,
+  //         min: doc.data().min,
+  //         sec: doc.data().sec,
+  //       }));
+  //       console.log(11111111111111);
+  //       setTodolist(todosInFirestore);
+  //     }
+  //   }
+  //   if (uid) {
+  //     loadTodos();
+  //   }
+  // }, [authState]);
+
+  //* 정보
+
+  //*---------------------------------------------------------------------
 
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({

@@ -6,9 +6,9 @@ export interface IForm {
 }
 export interface ITodo {
   text: string;
-  id: number;
-  min:number;// 초기준입니다. util함수로 변환해서 사용해야 합니다.
-  sec:number;// 초기준입니다. util함수로 변환해서 사용해야 합니다.
+  id: any;
+  min: number; // 초기준입니다. util함수로 변환해서 사용해야 합니다.
+  sec: number; // 초기준입니다. util함수로 변환해서 사용해야 합니다.
 }
 
 export const todoState = atom<ITodo[]>({

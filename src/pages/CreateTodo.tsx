@@ -1,10 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { IForm, todoState } from "./atoms";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { IForm, todoState, ITodo } from "./atoms";
 import ImgSrc from "./img/AddImg.png";
-
+import { authState } from "../atoms/atoms";
+import { firestore } from "../firebaseConfig";
+import { collection, doc, setDoc } from "firebase/firestore";
+import useFireReq from "../hooks/useFireReq";
 //css
 
 const Form = styled.form`
@@ -63,12 +66,12 @@ const Input = styled.input`
 
 export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
-  const setTodo = useSetRecoilState(todoState);
-  const [할일, 셋함수] = useRecoilState(todoState);
-  // console.log(할일);
+  const [todos, setTodos] = useRecoilState(todoState);
+  const { addTodoFireBase } = useFireReq();
   const handleTodo = ({ todo }: IForm) => {
-    setTodo((preTodo) => [{ text: todo, id: Date.now() ,min:0, sec:0}, ...preTodo]);
+    const newTodo = { text: todo, id: 0, min: 0, sec: 0 };
     setValue("todo", "");
+    addTodoFireBase(newTodo);
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
   return (
