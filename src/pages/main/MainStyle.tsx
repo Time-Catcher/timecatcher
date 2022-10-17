@@ -193,6 +193,8 @@ export const BBoMoDescModal = styled.div`
     transform: translate(-50%,-50%);
     right:auto;
     z-index: 10000;
+    max-width:100%;
+    max-height:100%;
     width: 600px;
     height: 672px;
     background-color: #FFFBFF;
@@ -207,6 +209,7 @@ export const BBoMoDescModal = styled.div`
 
 export const BBoMoDescTitleWrapper = styled.div`
     width: 530px;
+    max-width:100%;
     height: 5px;
     display: flex;
     justify-content: space-between;
@@ -215,7 +218,8 @@ export const BBoMoDescTitleWrapper = styled.div`
 
 export const BBoMoDescTitle = styled.span`
     font-weight: 500;
-    font-size: 30px;
+    font-size: 1rem;
+    
 `
 
 export const BBoMoModalQuitButton = styled.img`

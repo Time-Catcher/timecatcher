@@ -239,6 +239,7 @@ const MainPage = () => {
         onClose={toggleLeftDrawer}
         direction="left"
         size={452}
+        style = {{maxWidth:"80vw"}}
       >
         <Preference onClose={toggleLeftDrawer} />
       </LeftDrawer>
@@ -248,6 +249,7 @@ const MainPage = () => {
         onClose={toggleRightDrawer}
         direction="right"
         size={452}
+        style ={{maxWidth:"80vw"}}
       >
         <TodoList />
       </Drawer>

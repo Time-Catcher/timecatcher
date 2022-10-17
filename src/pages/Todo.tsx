@@ -41,6 +41,7 @@ const TodoItem = styled.div<IsChecked>`
   padding: 8px;
   margin-bottom: 15px;
   width: 350px;
+  max-width:60vw;
   min-height: 64px;
 
   color: ${(props) => (props.isChecked ? "grey" : props.theme.textColor)};
@@ -224,7 +225,7 @@ export default function Todo({ text, id, min, sec }: ITodo) {
 
   return (
     <>
-      <TodoItem isChecked={isChecked}>
+      <TodoItem isChecked={isChecked} onClick = {()=>onActivated()}>
         {editMode ? (
           <EditTodo>
             <input type="text" defaultValue={text} ref={editInputRef} />

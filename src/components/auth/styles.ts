@@ -12,8 +12,8 @@ const AuthContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  padding: 30px 0;
+  max-width: 400px;
+  padding: 30px 20px;
   margin-top: 20px;
   border: 1px solid #7a757f;
   border-radius: 8px;
@@ -28,7 +28,7 @@ const AuthForm = styled.form`
   padding: 16px 8px;
   gap: 32px;
   position: relative;
-  width: 320px;
+  max-width: 320px;
   border-radius: 16px;
 `;
 
