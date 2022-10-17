@@ -2,11 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { /*activeTodoSpendTimeState,*/ completedTodoCount, ITodo,  todoState } from "./atoms";
+import {
+  /*activeTodoSpendTimeState,*/ completedTodoCount,
+  ITodo,
+  todoState,
+} from "./atoms";
 import PomoCount from "./img/Pomocounter.png";
 import Dots from "./img/Dot.png";
 import Chk from "./img/checkbox.png";
-import { activeTodoSelector, activeTodoState, timerDataState } from "../atoms/atoms";
+import {
+  activeTodoSelector,
+  activeTodoState,
+  timerDataState,
+} from "../atoms/atoms";
+import useFireReq from "../hooks/useFireReq";
 
 const TodoContainer = styled.div`
   display: flex;
@@ -104,19 +113,19 @@ interface IsChecked {
 
 type Count = (test: number) => void;
 
-export default function Todo({ text, id, min,sec }: ITodo) {
+export default function Todo({ text, id, min, sec }: ITodo) {
   const [editOpen, setEditOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const setCount = useSetRecoilState(completedTodoCount);
   const setTodo = useSetRecoilState(todoState);
   const [editMode, setEditMode] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
+  const { editTodoFireBase, removeTodoFireBase } = useFireReq();
 
   const [activateTodo, setActivateTodo] = useRecoilState(activeTodoState);
-   const {seconds}= useRecoilValue(timerDataState);
+  const { seconds } = useRecoilValue(timerDataState);
   //  const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
-   
-   
+
   //  useEffect(()=>{
   //   if(activeTodoSpendTime){
   //     setActivateTodoSpendTime(activeTodoSpendTime+1);
@@ -149,12 +158,18 @@ export default function Todo({ text, id, min,sec }: ITodo) {
         ...oldToDos.slice(deleteIndex + 1),
       ];
     });
+    removeTodoFireBase(id);
   };
 
   const handleEdit = () => {
     console.log(editInputRef);
     const newText = editInputRef.current?.value;
-    const newTodo:ITodo = { id: Date.now(), text: newText as any ,min:0,sec:0};
+    const newTodo: ITodo = {
+      id,
+      text: newText as any,
+      min,
+      sec,
+    };
 
     setTodo((oldToDos) => {
       const editIndex = oldToDos.findIndex((toDo) => toDo.id === id);
@@ -164,7 +179,11 @@ export default function Todo({ text, id, min,sec }: ITodo) {
         ...oldToDos.slice(editIndex + 1),
       ];
     });
+
+    editTodoFireBase(newTodo);
+    setEditMode(false);
   };
+
   const onEditOpen = () => {
     setEditOpen((prev) => !prev);
   };
@@ -206,19 +225,19 @@ export default function Todo({ text, id, min,sec }: ITodo) {
         </>
       )}
 
-        {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
-        {!isChecked && editOpen ? (
-          <EditGroup>
-            <button
-              onClick={onDelete}
+      {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
+      {!isChecked && editOpen ? (
+        <EditGroup>
+          <button
+            onClick={onDelete}
             style={{ backgroundColor: "#BA1A1A", color: "#fffbff" }}
-            >
-              삭제
-            </button>
+          >
+            삭제
+          </button>
           <button onClick={onEditMode}>수정</button>
-          </EditGroup>
-        ) : null}
-      </TodoItem>
+        </EditGroup>
+      ) : null}
+    </TodoItem>
   );
 }
 
