@@ -83,7 +83,7 @@ export default function CreateTodo() {
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
   return (
-    <>
+    <div style={{maxWidth:"60vw"}}>
       <Form onSubmit={handleSubmit(handleTodo)}>
         <AddBtn />
         <Input
@@ -93,6 +93,6 @@ export default function CreateTodo() {
           })}
         />
       </Form>
-    </>
+    </div>
   );
 }
