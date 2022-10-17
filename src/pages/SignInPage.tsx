@@ -42,18 +42,21 @@ const AuthContainer = styled.div`
   & h2 {
     font-size: 20px;
   }
-`;
+  `;
 
-const AuthLogo = styled.div`
+  const AuthLogo = styled.div`
   text-align: center;
-
+  
   & img {
+    display: inline-block;
     width: 100px;
+    margin-bottom: 12px;
   }
-
+  
   & h1 {
-    font-size: 32px;
-    margin-top: 4px;
+    font-family: "Splash", cursive;
+    font-size: 34px;
+    margin-top: px;
     color: #fff;
     text-align: center;
   }
