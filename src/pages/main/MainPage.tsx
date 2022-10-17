@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  activeTodoSelector,
   activeTodoState,
   sessionAndBreakState,
   timerDataState,
@@ -36,9 +35,6 @@ import { ITodo, todoState } from "../atoms";
 import { OnMainTodo } from "../../components/main/OnMainTodo";
 import { firebaseConfig } from "../../firebaseConfig";
 import { Navigate } from "react-router";
-import { firestore } from "../../firebaseConfig";
-import { collection, doc, setDoc, query, getDocs } from "firebase/firestore";
-import { authState } from "../../atoms/atoms";
 // import NotificationSound from "../../asset/notification-sound.mp3"
 // import React, { useState } from 'react'
 // import MainTimer from '../../components/main/MainTimer';
@@ -60,39 +56,49 @@ const MainPage = () => {
   const setTimerFunction = useSetRecoilState(timerFunctionState);
   const setTimerData = useSetRecoilState(timerDataState);
   const [timerMode, setTimerMode] = useRecoilState(timerModeState);
+  const userData = sessionStorage.getItem(_session_key) || "{}";
+  const { displayName } = JSON.parse(userData);
+  // //* 로그인 시 세션에 담긴 유저 정보 담기;
+  // const [authData, setAuthData] = useRecoilState(authState);
+  // useEffect(() => {
+  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  //   const userData = sessionStorage.getItem(_session_key);
 
-  //* 로그인 시 세션에 담긴 유저 정보 담기;
-  const [authData, setAuthData] = useRecoilState(authState);
-  useEffect(() => {
-    const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
-    const userData = sessionStorage.getItem(_session_key);
-    if (userData) {
-      const { uid, email, displayName } = JSON.parse(userData).providerData[0];
-      setAuthData({ uid, email, displayName });
-    }
-  }, []);
+  //   if (userData) {
+  //     const { uid, email, displayName } = JSON.parse(userData);
+  //     setAuthData({ uid, email, displayName });
+  //   }
+  // }, []);
 
-  //* 파이어 베이스에서 로그인 시  데이터 요청
-  useEffect(() => {
-    async function loadTodos() {
-      const q = query(collection(firestore, authData.uid));
-      const querySnapshot = await getDocs(q);
+  // //* 파이어 베이스에서 로그인 시  데이터 요청
+  // useEffect(() => {
+  //   const _session_key = `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+  //   const userData = sessionStorage.getItem(_session_key) || "{}";
+  //   const { uid } = JSON.parse(userData);
 
-      if (querySnapshot) {
-        const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
-          id: doc.data().id,
-          text: doc.data().text,
-          min: doc.data().min,
-          sec: doc.data().sec,
-        }));
-        setTodolist(todosInFirestore);
-      }
-    }
+  //   async function loadTodos() {
+  //     const q = query(collection(firestore, uid));
+  //     const querySnapshot = await getDocs(q);
+  //     console.log(querySnapshot);
+  //     if (querySnapshot) {
+  //       const todosInFirestore: ITodo[] = querySnapshot.docs.map((doc) => ({
+  //         id: doc.data().id,
+  //         text: doc.data().text,
+  //         min: doc.data().min,
+  //         sec: doc.data().sec,
+  //       }));
+  //       console.log(11111111111111);
+  //       setTodolist(todosInFirestore);
+  //     }
+  //   }
+  //   if (uid) {
+  //     loadTodos();
+  //   }
+  // }, [authState]);
 
-    if (authData.uid) {
-      loadTodos();
-    }
-  }, [setTodolist]);
+  //* 정보
+
+  //*---------------------------------------------------------------------
 
   const { seconds, minutes, isRunning, start, pause, restart, resume } =
     useTimer({
@@ -183,6 +189,9 @@ const MainPage = () => {
 
   return (
     <Main>
+      <head>
+        <title>{`Time Cat'cher : 뽀모도로`}</title>
+      </head>
       {/* <button onClick={toggleLeftDrawer}>테스트</button> */}
       <LeftDrawer
         className="left-drawer"
@@ -219,7 +228,7 @@ const MainPage = () => {
           onClick={toggleLeftDrawer}
         />
         <TimerTodoWrapper>
-          <MainTimer openModal={handleActiveQuestion} />
+          <MainTimer openModal={handleActiveQuestion} nickname={displayName} />
         </TimerTodoWrapper>
 
         <MainDropLeft
@@ -227,7 +236,6 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
-      {/* <Mocktest /> */}
     </Main>
   );
 

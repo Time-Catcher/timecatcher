@@ -11,7 +11,8 @@ const PrefContainer = styled.div`
   max-width: 1024px;
   width: 100%;
   height: 100%;
-  background-color: #fffbff;
+  // background-color: #fffbff;
+  background-color: ${(props) => props.theme.bgColor};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,7 +25,8 @@ const HeaderBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: black;
+  // color: black;
+  color: ${(props) => props.theme.textColorBK};
 `;
 
 const OptionImage = styled.img`
@@ -37,7 +39,8 @@ const OptionImage = styled.img`
 
 const Title = styled.h1`
   font-size: 22px;
-  color: black;
+  // color: black;
+  color: ${(props) => props.theme.textColor};
   font-weight: 400;
 `;
 
@@ -69,6 +72,7 @@ const ModeWrapper = styled.div`
 const OptionTitle = styled.span`
   font-size: 16px;
   margin: 10px 0;
+  color: ${(props) => props.theme.textColorBK};
 `;
 
 const HelpLabel = styled.img`
@@ -105,5 +109,5 @@ export {
   ModeWrapper,
   OptionTitle,
   HelpLabel,
-  LogoutButton,
+  LogoutButton
 };

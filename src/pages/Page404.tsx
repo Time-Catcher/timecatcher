@@ -4,19 +4,24 @@ import styled from "styled-components";
 
 export default function Page404() {
   return (
-    <GlobalContainer>
-      <MainLogoTitle>{`Cat'cher`}</MainLogoTitle>
-      <MainLogo>
-        <MainCat src="/images/wizardCat.png" />
-      </MainLogo>
-      <NotFound>
-        <p>9와 3/4 승강장</p>
-        <p>페이지가 없다냥!!!</p>
-      </NotFound>
-      <Link to="/">
-        <ReturnLink>다시 돌아가랏!!</ReturnLink>
-      </Link>
-    </GlobalContainer>
+    <>
+      <head>
+        <title>{`Time Cat'cher : 에러페이지`}</title>
+      </head>
+      <GlobalContainer>
+        <MainLogoTitle>{`Cat'cher`}</MainLogoTitle>
+        <MainLogo>
+          <MainCat src="/images/wizardCat.png" />
+        </MainLogo>
+        <NotFound>
+          <p>9와 3/4 승강장</p>
+          <p>페이지가 없다냥!!!</p>
+        </NotFound>
+        <Link to="/">
+          <ReturnLink>다시 돌아가랏!!</ReturnLink>
+        </Link>
+      </GlobalContainer>
+    </>
   );
 }
 
@@ -77,6 +82,7 @@ const NotFound = styled.div`
   color: white;
   text-align: center;
   line-height: 60px;
+  font-family: "Single Day", cursive;
 `;
 
 const ReturnLink = styled.span`
@@ -85,4 +91,5 @@ const ReturnLink = styled.span`
   font-size: 24px;
   color: blue;
   text-decoration: underline;
+  font-family: "Single Day", cursive;
 `;

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Drawer from 'react-modern-drawer';
-import backgroundImg from '../img/pot.png';
 
 export const Main = styled.div`
     display: flex;
@@ -78,7 +77,36 @@ export const MainQuestion = styled.button`
 
 export const MainCat = styled.img`
     margin: 10px;
-    
+`
+
+
+export const MainTimerChat = styled.span`
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 20px;
+    font-family: 'Single Day', cursive;
+    color: #790087;
+    position: relative;
+	background: #ffffff;
+	border-radius: .4em;
+
+
+    &:after {
+        content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color: #ffffff;
+	border-top: 0;
+	border-left: 0;
+	margin-left: -5px;
+	margin-top: -10px;
+    }
 `
 
 export const MainBBomodoro = styled.div`
@@ -200,57 +228,76 @@ export const TodoNotification = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
+`
 
+export const TodoNotiTitle = styled.span`
+    color: #ffffff;
+    margin-right: 10px;
+
+`
+export const TodoNotiImg = styled.img`
+    width: 30px;
+    height: 30px;
 `
 
 export const WhatTodoWrapper = styled.div`
     width: 100%;
     display:flex;
     justify-content: space-around;
+    overflow: hidden;
+    margin-top: 10px;
 `
 
 export const OnMainTodoWrapper = styled.div`
   position: fixed;
   width: 500px;
-  top:20%;
+  height: 300px;
+  top:15%;
   left: 50%;
   padding: 10px;
   transform: translate(-50%,-50%);
-  background: #fffbff;
+  background: #444444;
   border-radius: 16px;
   height: 100px;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-  color: "#1C1B1E";
-  border: 10px solid #c700ff;
+  border: 10px solid #000000;
   text-align:center;
 `;
 export const TodoDivide = styled.hr`
-    width: 80%;
-    border: solid 5px #c700ff;
+    width: 100%;
+    border: dotted 2px #ffffff;
 `
 export const WhatTodoNow = styled.span`
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 30px;
-  animation: textLoop 2s linear infinite;
-  @keyframes textLoop {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(-100%, 0, 0);
-      transform: translate3d(-100%, 0, 0);
-    }
+  background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(222,168,248,1) 0%, rgba(168,222,248,1) 21.8%, rgba(189,250,205,1) 35.6%, rgba(243,250,189,1) 52.9%, rgba(250,227,189,1) 66.8%, rgba(248,172,172,1) 90%, rgba(254,211,252,1) 99.7% );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-overflow: ellipsis;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
   }
+}
+
 `;
 export const HowMaySpendTime = styled.span`
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 30px;
+  color: #ffffff;
 
 `;

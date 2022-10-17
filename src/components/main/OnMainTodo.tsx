@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { activeTodoSelector } from "../../atoms/atoms";
 import { ITodo } from "../../pages/atoms";
-import { TodoDivide, TodoNotification, HowMaySpendTime, OnMainTodoWrapper, WhatTodoNow, WhatTodoWrapper } from "../../pages/main/MainStyle";
+import { TodoDivide, TodoNotification, HowMaySpendTime, OnMainTodoWrapper, WhatTodoNow, WhatTodoWrapper, TodoNotiTitle, TodoNotiImg } from "../../pages/main/MainStyle";
 import { fillZeroFromStart } from "../../util/fillZero";
 
 export const OnMainTodo = () => {
@@ -13,8 +13,8 @@ export const OnMainTodo = () => {
     return(
     <OnMainTodoWrapper>
         <TodoNotification>
-          <span>지금 하고있다냥!</span>
-          <img src="/images/paws.png"/>
+          <TodoNotiTitle>지금 하고있다냥!</TodoNotiTitle>
+          <TodoNotiImg src="/images/movingCat.gif"/>
         </TodoNotification>
         <TodoDivide/>
         <WhatTodoWrapper>

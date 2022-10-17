@@ -13,6 +13,7 @@ import {
   MainLogoTitle,
   MainQuestion,
   MainTimerButton,
+  MainTimerChat,
   MainTimerWrapper,
   PauseButton,
   PlayButton,
@@ -23,8 +24,9 @@ import { minutesToDate } from "../../util/minutesToDate";
 type PlayButtonType = "play" | "pause" | "playAndReset";
 interface MainTimerProps {
   openModal: () => void;
+  nickname: string;
 }
-const MainTimer = ({ openModal }: MainTimerProps) => {
+const MainTimer = ({ openModal, nickname }: MainTimerProps) => {
   const { minutes, seconds, isRunning } = useRecoilValue(timerDataState);
   const { start, restart, pause, resume } = useRecoilValue(timerFunctionState);
   const sessionAndBreakTime = useRecoilValue(sessionAndBreakState);
@@ -72,6 +74,8 @@ const MainTimer = ({ openModal }: MainTimerProps) => {
           }[playButtonType]
         }
       </MainTimerButton>
+      <MainTimerChat>{timerMode==="breakTime" ? `휴식이다냥!` : `${nickname}, 반갑다냥!`}</MainTimerChat>
+      
     </MainTimerWrapper>
   );
 };

@@ -1,12 +1,23 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
+
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { /*activeTodoSpendTimeState,*/ completedTodoCount, ITodo,  todoState } from "./atoms";
+import {
+  /*activeTodoSpendTimeState,*/ completedTodoCount,
+  ITodo,
+  todoState,
+} from "./atoms";
 import PomoCount from "./img/Pomocounter.png";
 import Dots from "./img/Dot.png";
 import Chk from "./img/checkbox.png";
-import { activeTodoSelector, activeTodoState, timerDataState } from "../atoms/atoms";
+import {
+  activeTodoSelector,
+  activeTodoState,
+  timerDataState,
+} from "../atoms/atoms";
+import useFireReq from "../hooks/useFireReq";
 
 const TodoContainer = styled.div`
   display: flex;
@@ -20,25 +31,27 @@ const TodoContainer = styled.div`
   background: #fffbff;
   border-radius: 15px;
 `;
-
 const TodoItem = styled.div<IsChecked>`
   text-decoration: ${(props) => (props.isChecked ? "line-through" : null)};
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow-wrap: break-word;
   padding: 8px;
   margin-bottom: 15px;
-  width: 389px;
-  height: 64px;
-  color: ${(props) => (props.isChecked ? "#282828" : "#7150B4")};
-  background-color: ${(props) => (props.isChecked ? "#4b4b4cbe" : "#fffbff")};
+  width: 350px;
+  min-height: 64px;
+
+  color: ${(props) => (props.isChecked ? "grey" : props.theme.textColor)};
+
+  word-break: break-all;
+  color: ${(props) => (props.isChecked ? "grey" : "#280866")};
+
+  background-color: ${(props) =>
+    props.isChecked ? "rgba(153, 121, 173,0.5)" : props.theme.todoItem};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const ChkBox = styled.div`
@@ -58,7 +71,6 @@ const PomoCounter = styled.div`
   height: 18px;
   background: url(${PomoCount}) center;
 `;
-
 const EditBtn = styled.button`
   position: absolute;
   right: 10px;
@@ -70,32 +82,53 @@ const EditBtn = styled.button`
     cursor: pointer;
   }
 `;
-
 const EditGroup = styled.div`
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  width: 150px;
-  height: 20px;
-  bottom: 1px;
-  padding-bottom: 5px;
-  right: 30px;
+  height: 54px;
+  bottom: 50%;
+  transform: translate(0, 50%);
+  right: 40px;
   button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 8px;
+    padding: 12px 8px;
     gap: 10px;
-
     position: relative;
     width: 60px;
     height: 20px;
     background: #fffbff;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    border-color: white;
+    border: none;
+    outline: none;
   }
+`;
+const TodoSpan = styled.span`
+  display: inline-block;
+  width: 75%;
+  padding: 20px;
+  overflow: visible;
+`;
+const EditTodo = styled.div`
+  margin-left: 20px;
+  & input {
+    display: inline-block;
+    height: 30px;
+    width: 120%;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+  }
+`;
+const CheckInput = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
 `;
 
 interface IsChecked {
@@ -104,19 +137,19 @@ interface IsChecked {
 
 type Count = (test: number) => void;
 
-export default function Todo({ text, id, min,sec }: ITodo) {
+export default function Todo({ text, id, min, sec }: ITodo) {
   const [editOpen, setEditOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const setCount = useSetRecoilState(completedTodoCount);
   const setTodo = useSetRecoilState(todoState);
   const [editMode, setEditMode] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
+  const { editTodoFireBase, removeTodoFireBase } = useFireReq();
 
   const [activateTodo, setActivateTodo] = useRecoilState(activeTodoState);
-   const {seconds}= useRecoilValue(timerDataState);
+  const { seconds } = useRecoilValue(timerDataState);
   //  const[activeTodoSpendTime,setActivateTodoSpendTime] = useRecoilState(activeTodoSpendTimeState);
-   
-   
+
   //  useEffect(()=>{
   //   if(activeTodoSpendTime){
   //     setActivateTodoSpendTime(activeTodoSpendTime+1);
@@ -149,12 +182,17 @@ export default function Todo({ text, id, min,sec }: ITodo) {
         ...oldToDos.slice(deleteIndex + 1),
       ];
     });
+    removeTodoFireBase(id);
   };
 
   const handleEdit = () => {
-    console.log(editInputRef);
     const newText = editInputRef.current?.value;
-    const newTodo:ITodo = { id: Date.now(), text: newText as any ,min:0,sec:0};
+    const newTodo: ITodo = {
+      id,
+      text: newText as any,
+      min,
+      sec,
+    };
 
     setTodo((oldToDos) => {
       const editIndex = oldToDos.findIndex((toDo) => toDo.id === id);
@@ -164,7 +202,11 @@ export default function Todo({ text, id, min,sec }: ITodo) {
         ...oldToDos.slice(editIndex + 1),
       ];
     });
+
+    editTodoFireBase(newTodo);
+    setEditMode(false);
   };
+
   const onEditOpen = () => {
     setEditOpen((prev) => !prev);
   };
@@ -181,44 +223,51 @@ export default function Todo({ text, id, min,sec }: ITodo) {
   };
 
   return (
-    <TodoItem
-      isChecked={isChecked}
-      onClick={() => {
-        onActivated();
-      }}
-    >
-      {editMode ? (
-        <>
-          <input type="text" ref={editInputRef} />
-          <button onClick={handleEdit}>수정</button>
-          <button onClick={onCancel}>취소</button>
-        </>
-      ) : (
-        <>
-          <input
-            type="checkbox"
-            placeholder={text}
-            onClick={onChecked}
-            key={id}
-          />
-          {text}
-          <PomoCounter />
-        </>
-      )}
-
+    <>
+      <TodoItem isChecked={isChecked}>
+        {editMode ? (
+          <EditTodo>
+            <input type="text" defaultValue={text} ref={editInputRef} />
+            <EditGroup>
+              <button
+                onClick={handleEdit}
+                style={{ color: "white", backgroundColor: "#6C119C" }}
+              >
+                완료
+              </button>
+              <button onClick={onCancel} style={{ backgroundColor: "#fcddd9" }}>
+                취소
+              </button>
+            </EditGroup>
+          </EditTodo>
+        ) : (
+          <>
+            <CheckInput
+              type="checkbox"
+              placeholder={text}
+              onClick={onChecked}
+              key={id}
+            />
+            <TodoSpan>{text}</TodoSpan>
+            <PomoCounter />
+          </>
+        )}
         {!isChecked && !editMode && <EditBtn onClick={onEditOpen} />}
         {!isChecked && editOpen ? (
           <EditGroup>
             <button
               onClick={onDelete}
-            style={{ backgroundColor: "#BA1A1A", color: "#fffbff" }}
+              style={{ backgroundColor: "#6C119C", color: "#fffbff" }}
             >
               삭제
             </button>
-          <button onClick={onEditMode}>수정</button>
+            <button onClick={onEditMode} style={{ backgroundColor: "#fcddd9" }}>
+              수정
+            </button>
           </EditGroup>
         ) : null}
       </TodoItem>
+    </>
   );
 }
 
