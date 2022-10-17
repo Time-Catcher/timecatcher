@@ -233,7 +233,6 @@ const MainPage = () => {
           onClick={toggleRightDrawer}
         />
       </MainPageWrapper>
-      {/* <Mocktest /> */}
     </Main>
   );
 

@@ -77,6 +77,7 @@ const NotFound = styled.div`
   color: white;
   text-align: center;
   line-height: 60px;
+  font-family: "Single Day", cursive;
 `;
 
 const ReturnLink = styled.span`
@@ -85,4 +86,5 @@ const ReturnLink = styled.span`
   font-size: 24px;
   color: blue;
   text-decoration: underline;
+  font-family: "Single Day", cursive;
 `;
