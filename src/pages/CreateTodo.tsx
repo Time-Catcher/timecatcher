@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { IForm, todoState, ITodo } from "./atoms";
-import ImgSrc from "./img/AddImg.png";
+import ImgSrc from "./img/AddImgTest.png";
+import ImgSrcLight from "./img/AddImgLight.png";
 import { authState } from "../atoms/atoms";
 import { firestore } from "../firebaseConfig";
 import { collection, doc, setDoc } from "firebase/firestore";
 import useFireReq from "../hooks/useFireReq";
+import { darkTheme, lightTheme, theme } from "../styles/theme";
 //css
 
 const Form = styled.form`
@@ -64,14 +66,12 @@ const Input = styled.input`
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: ${(props) => props.theme.textColor};
   }
-
 `;
 
 export default function CreateTodo() {
   const { register, handleSubmit, setValue } = useForm<IForm>();
 
   const setTodo = useSetRecoilState(todoState);
-
 
   const [todos, setTodos] = useRecoilState(todoState);
   const { addTodoFireBase } = useFireReq();
@@ -83,7 +83,7 @@ export default function CreateTodo() {
   }; //투두값을 리코일 스테이트(버블)에 추가하는 함수
 
   return (
-    <div style={{maxWidth:"60vw"}}>
+    <div style={{ maxWidth: "60vw" }}>
       <Form onSubmit={handleSubmit(handleTodo)}>
         <AddBtn />
         <Input
